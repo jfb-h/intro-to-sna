@@ -1,6 +1,8 @@
 ---
 title: "R basics IV"
 editor: visual
+format:
+  html: default
 ---
 
 # Our first plot
@@ -35,12 +37,6 @@ We can see that our plot now contains axis labels and ticks informed by the rang
 
 ```{r}
 p + geom_point()
-```
-
-```{r}
-ggplot(data = gapminder, 
-       mapping = aes(x = gdpPercap, y = lifeExp)) + 
-  geom_point()
 ```
 
 At this point we have a basic plot, which we can now customize to our heart's content.

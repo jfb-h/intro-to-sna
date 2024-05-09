@@ -33,6 +33,11 @@ website:
             text: "Data wrangling"
           - href: 04-plotting.qmd
             text: "Data visualization"
+              
+      - section: "Networks in `R`"
+        contents:
+          - href: 05-networks.qmd
+            text: "Network basics"
 
 format:
   html:
