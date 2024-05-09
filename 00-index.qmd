@@ -1,0 +1,12 @@
+---
+title: "A first course in social network analysis with R"
+---
+
+This website accompanies the practical introduction to social network analysis with `R` taught at the LMU Department of Geography. The course is part of the Bachelor Degree module *Special Anthropogeography* and is usually taught in the summer term.
+
+The course is targeted at students with limited programming experience. Accordingly, the first couple of sessions include a general introduction to some `R` programming concepts, without delving deeply into the fundamentals.
+
+## TODO
+
+- Course structure table
+- Further reading and resources

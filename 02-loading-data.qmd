@@ -1,0 +1,79 @@
+---
+title: "R Basics II"
+editor: visual
+---
+
+# Loading data
+
+The first step for any `R` analysis is getting data into an `R` session. While it sounds like this should be easy, data loading can be quite a hassle due to an unending variety of data formats, which are often only weakly specified. Due to this, data loading can be quite frustrating, especially when one is just getting started.
+
+Nevertheless, there is a variety of packages which can help us with this step. Let's try two of the most common formats:
+
+### Writing to and loading data from an excel spreadsheet
+
+Sometimes we want to send our data to a colleague, who might only be familiar with excel. So as a first step, we're going to write the `gapminder` data to an excel spreadsheet. Let's have a look at our data first:
+
+```{r}
+library(gapminder)
+gapminder
+```
+
+We can see that there's 1704 rows (observations) and 6 columns (variables). Let's write it to an excel file:
+
+```{r}
+library(openxlsx)
+
+write.xlsx(gapminder,
+           file = "data/gapminder.xlsx",
+           colNames=TRUE)
+```
+
+In our working directory, there should now be the `gapminder.xlsx` file, containing a sheet with our data frame. There's a variety of formatting options, but usually you should regard excel as a mere transport format and not as the final styled output.
+
+Having created an excel file, we can also go the other way. Let's read our data back into an R data.frame. For reading excel files, I would usually recommend the `readxl` package, which is part of the extended `tidyverse`:
+
+```{r}
+library(readxl)
+
+df <- read_excel("data/gapminder.xlsx")
+df
+```
+
+### Writing to and loading data from a csv file
+
+One of the most wide-spread formats is .*csv* (for comma-separated values). It is a very simple and lightweight but also somewhat restrictive and underspecified format (e.g. regarding delimiter, headers, data types, sentinel values, etc.).
+
+While there's a built-in function to read from csv, we're again going to rely on the tidyverse here, which contains the `readr` package, providing this functionality.
+
+```{r}
+library(readr)
+```
+
+We'll follow the same procedure as before, first writing the gapminder data to a csv file and then reading it back again:
+
+```{r}
+write_csv(gapminder, file = "data/gapminder.csv")
+```
+
+There should now be a `gapminder.csv` file in your working directory, which you can also view with `RStudio` (click it in the file viewer).
+
+Let's read it back in again:
+
+```{r}
+df2 <- read_csv("data/gapminder.csv")
+df2
+```
+
+When loading a csv file with `read_csv`, we get some information about the automatic detection of parsing specifications (e.g. the detected delimiter and column types).
+
+## Exercises
+
+1.  Identify the data format of the file `data.csv` and find a function/package to load your data into `R`.
+2.  Identify the correct specification and arguments for loading your data and load your data into a `data.frame`.
+
+```{r}
+library(readr)
+data <- read_csv2("data/data.csv")
+```
+
+\

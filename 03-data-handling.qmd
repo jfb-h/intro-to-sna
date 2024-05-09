@@ -1,0 +1,91 @@
+---
+title: "R basics III"
+editor: visual
+---
+
+# Data wrangling
+
+Data wrangling refers to all the steps that need to be taken before the actual analysis can be conducted. As such, it is often considered a nuisance that however usually takes a considerable share of the overall effort and code in a research project.
+
+Data wrangling comprises, e.g., filtering out bad data, selecting a subset of available data, reshaping data into a more useful format, or computing derivative measures and summaries. In the following, we will look at some of the most frequently needed operations and how to apply them using the `tidyverse`.
+
+We will again do so using the `gapminder` dataset:
+
+```{r}
+library(gapminder)
+library(tidyverse)
+gapminder
+```
+
+## Filtering rows
+
+Oftentimes, we're only interested in a subset of the observations contained in our data. Say, for example, we only want data on Germany since the 1990s. We can use the `filter` function to achieve this:
+
+```{r}
+filter(gapminder, country == "Germany", year >= 1990)
+```
+
+## Selecting and renaming variables
+
+Similarly, we're often only interested in a subset of the variables. We can use the `select` command to select only some variables and also to rename them:
+
+```{r}
+select(gapminder, country, year, life_expectancy=lifeExp)
+```
+
+## Group summaries
+
+Often, we want to group our data according to one variable (e.g., the continent) and then compute a summary for each of the groups based on another variable (e.g., the mean life expectancy). We can do this by first creating a grouped version of our data using `group_by` and then using `summarize` to compute a summary for each group:
+
+```{r}
+data_grouped <- group_by(gapminder, continent)
+summarize(data_grouped, lifeExp_mean = mean(lifeExp))
+```
+
+Note that this drops all other variables except for the grouping variable and the summary variable.
+
+## Data pipelines
+
+Typically, data wrangling implies combining multiple of these steps. `R` allows us to build *data pipelines* with the pipe operator `|>` which pipes the output of the operation to the left into the first argument of the operation to the right. Instead of writing `filter(data, year > 1990)` we could for example write `data |> filter(year > 1990)`.
+
+```{r}
+filter(gapminder, year > 1990)
+
+```
+
+On its own, this is not very useful. However, this syntax allows us to chain multiple operations from left to right or from top to bottom, which is easier to read than nested functions. consider for example the following:
+
+```{r}
+select(filter(gapminder, year > 1990, country == "Germany"), year, lifeExp)
+
+# is equivalent to
+
+gapminder |>
+  filter(year > 1990, country == "Germany") |>
+  select(year, lifeExp)
+```
+
+## Exercises
+
+1.  Build a data pipeline that computes the mean life expectancy and the mean per-capita GDP in Europe for each 5-year period since the 1980s.
+
+```{r echo=FALSE}
+
+# Write your code here...
+```
+
+2.  Reshape the gapminder data into a country-by-year matrix, i.e., a data frame where each row is a country, each column is a year and each cell contains the GDP for that country-year pair.
+
+```{r}
+
+# Write your code here...
+```
+
+3.  How many entries in gapminder are from after 1960 and come from OECD countries?
+
+    Here's a list of all countries in the OECD: "Australia", "Austria", "Belgium", "Canada", "Chile", "Colombia", "Costa Rica", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Israel", "Italy", "Japan", "Korea", "Latvia", "Lithuania", "Luxembourg", "Mexico", "Netherlands", "New Zealand", "Norway", "Poland", "Portugal", "Slovak Republic", "Slovenia", "Spain", "Sweden", "Switzerland", "Turkey", "United Kingdom", "United States"
+
+```{r}
+
+# Write your code here...
+```

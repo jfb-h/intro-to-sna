@@ -1,0 +1,127 @@
+---
+title: "R basics IV"
+editor: visual
+---
+
+# Our first plot
+
+In the following, we will look at the `gapminder` dataset, which contains information on life expectancy and GDP per capita for more than 140 countries over a period of more than 50 years. Based on this data, we investigate the relationship between life expectancy and economic development across the world.
+
+```{r}
+library(gapminder)
+gapminder
+```
+
+For plotting, we use the `ggplot2` package, which is contained in the `tidyverse`. The fundamental building block for any plot is a call to the `ggplot()` function, to which we pass the data that we want to plot. On its own, this just creates a blank plot, as we haven't specified which variables we want to plot and how we want to plot them:
+
+```{r}
+library(ggplot2)
+
+p <- ggplot(data = gapminder)
+p
+```
+
+To do so, we have to specify an *aesthetic* *mapping* from our data variables to the visual elements of our plot (such as positions or colors). This allows us to specify that we want to display variation in GDP along the x-axis and life expectancy along the y-axis:
+
+```{r}
+p <- ggplot(data = gapminder,              
+            mapping = aes(x = gdpPercap, y = lifeExp))
+p
+```
+
+We can see that our plot now contains axis labels and ticks informed by the range of the data, but there is still no visual representation of the data, because we haven't specified what kind of plot we want.
+
+`ggplot` operates in terms of *layers* which we can add to our basic plot specification with `+` to include specific geometric representations of our data (such as points in a scatterplot):
+
+```{r}
+p + geom_point()
+```
+
+```{r}
+ggplot(data = gapminder, 
+       mapping = aes(x = gdpPercap, y = lifeExp)) + 
+  geom_point()
+```
+
+At this point we have a basic plot, which we can now customize to our heart's content.
+
+# Exercises (20 mins)
+
+Use the jointly created code and add to it to solve the following tasks:
+
+1.  Change the color of the points to blue.
+
+    ```{r}
+
+    # Write your code here...
+    ```
+
+2.  Make the points transparent, so that it is easier to see overlapping data.
+
+    ```{r}
+
+    # Write your code here...
+    ```
+
+3.  Specify a log scale for GDP.
+
+    ```{r}
+
+    # Write your code here...
+    ```
+
+4.  Color the points by continent.
+
+    ```{r}
+
+    # Write your code here...
+    ```
+
+5.  Add more readable labels to the plot.
+
+    ```{r}
+
+    # Write your code here...
+    ```
+
+6.  Add a title and a subtitle to the plot.
+
+    ```{r}
+
+    # Write your code here...
+    ```
+
+7.  Find different plot themes and pick one.
+
+    ```{r}
+
+    # Write your code here...
+    ```
+
+8.  Move the legend to the bottom of the plot.
+
+    ```{r}
+
+    # Write your code here...
+    ```
+
+    9.  Add a regression line to the plot.
+
+    ```{r}
+
+    # Write your code here...
+    ```
+
+9.  Save the plot as a `.png` file.
+
+    ```{r}
+
+    # Write your code here...
+    ```
+
+10. Visualize the population development by continent. Think about what you would want the plot to look like first and then identify the corresponding `geom_*`.
+
+    ```{r}
+
+    # Write your code here...
+    ```

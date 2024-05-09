@@ -1,0 +1,47 @@
+project:
+  type: website
+
+website:
+  title: "Intro to SNA in R"
+  page-navigation: true
+  page-footer:
+    left: "Copyright 2024, Jakob Hoffmann" 
+    right: 
+      - icon: github
+        href: https://github.com/jfb-h
+
+
+  sidebar:
+    style: "docked"
+    background: "light"
+    search: true
+    contents:
+      - section: "Getting started"
+        contents:
+          - href: 00-index.qmd
+            text: About this course
+          - href: 00-simple-example.qmd
+            text: A basic example
+
+      - section: "`R` basics"
+        contents:
+          - href: 01-basics.qmd
+            text: "Variables and functions"
+          - href: 02-loading-data.qmd
+            text: "Loading data"
+          - href: 03-data-handling.qmd
+            text: "Data wrangling"
+          - href: 04-plotting.qmd
+            text: "Data visualization"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    grid:
+      body-width: 600px
+      gutter-width: 3rem
+
+
+
