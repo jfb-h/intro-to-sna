@@ -199,6 +199,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Networks in <code>R</code></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Network basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -348,26 +365,15 @@ dbl (4): year, lifeExp, pop, gdpPercap
 <section id="exercises" class="level2">
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
 <ol type="1">
-<li>Identify the data format of the file <code>data.csv</code> and find a function/package to load your data into <code>R</code>.</li>
-<li>Identify the correct specification and arguments for loading your data and load your data into a <code>data.frame</code>.</li>
+<li><strong>Identify the data format of the file <code>data.csv</code> and find a function/package to load your data into <code>R</code>.</strong></li>
+<li><strong>Identify the correct specification and arguments for loading your data and load your data into a <code>data.frame</code>.</strong></li>
 </ol>
 <div class="cell">
+<details class="code-fold">
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(<span class="st">"data/data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>ℹ Using "','" as decimal and "'.'" as grouping mark. Use `read_delim()` for more control.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 100 Columns: 4
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ";"
-chr (1): name
-dbl (2): id, age
-num (1): score
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
+</details>
 </div>
 <p><br>
 </p>

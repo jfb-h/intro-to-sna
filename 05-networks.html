@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Intro to SNA in R – R basics III</title>
+<title>Intro to SNA in R – Network basics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./04-plotting.html" rel="next">
-<link href="./02-loading-data.html" rel="prev">
+<link href="./04-plotting.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -116,7 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-basics.html"><code>R</code> basics</a></li><li class="breadcrumb-item"><a href="./03-data-handling.html">Data wrangling</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-networks.html">Networks in <code>R</code></a></li><li class="breadcrumb-item"><a href="./05-networks.html">Network basics</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -187,7 +152,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-data-handling.html" class="sidebar-item-text sidebar-link active">
+  <a href="./03-data-handling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Data wrangling</span></a>
   </div>
 </li>
@@ -210,7 +175,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-networks.html" class="sidebar-item-text sidebar-link">
+  <a href="./05-networks.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Network basics</span></a>
   </div>
 </li>
@@ -226,13 +191,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link active" data-scroll-target="#data-wrangling">Data wrangling</a>
+  <li><a href="#different-types-of-networks" id="toc-different-types-of-networks" class="nav-link active" data-scroll-target="#different-types-of-networks">Different types of networks</a>
   <ul class="collapse">
-  <li><a href="#filtering-rows" id="toc-filtering-rows" class="nav-link" data-scroll-target="#filtering-rows">Filtering rows</a></li>
-  <li><a href="#selecting-and-renaming-variables" id="toc-selecting-and-renaming-variables" class="nav-link" data-scroll-target="#selecting-and-renaming-variables">Selecting and renaming variables</a></li>
-  <li><a href="#group-summaries" id="toc-group-summaries" class="nav-link" data-scroll-target="#group-summaries">Group summaries</a></li>
-  <li><a href="#data-pipelines" id="toc-data-pipelines" class="nav-link" data-scroll-target="#data-pipelines">Data pipelines</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#directed-networks" id="toc-directed-networks" class="nav-link" data-scroll-target="#directed-networks">Directed networks</a>
+  <ul class="collapse">
+  <li><a href="#symmetrizing" id="toc-symmetrizing" class="nav-link" data-scroll-target="#symmetrizing">Symmetrizing</a></li>
+  </ul></li>
+  <li><a href="#weighted-networks" id="toc-weighted-networks" class="nav-link" data-scroll-target="#weighted-networks">Weighted networks</a>
+  <ul class="collapse">
+  <li><a href="#dichotomizing" id="toc-dichotomizing" class="nav-link" data-scroll-target="#dichotomizing">Dichotomizing</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -240,9 +208,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-basics.html"><code>R</code> basics</a></li><li class="breadcrumb-item"><a href="./03-data-handling.html">Data wrangling</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-networks.html">Networks in <code>R</code></a></li><li class="breadcrumb-item"><a href="./05-networks.html">Network basics</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">R basics III</h1>
+<h1 class="title">Network basics</h1>
 </div>
 
 
@@ -259,193 +227,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="data-wrangling" class="level1">
-<h1>Data wrangling</h1>
-<p>Data wrangling refers to all the steps that need to be taken before the actual analysis can be conducted. As such, it is often considered a nuisance that however usually takes a considerable share of the overall effort and code in a research project.</p>
-<p>Data wrangling comprises, e.g., filtering out bad data, selecting a subset of available data, reshaping data into a more useful format, or computing derivative measures and summaries. In the following, we will look at some of the most frequently needed operations and how to apply them using the <code>tidyverse</code>.</p>
-<p>We will again do so using the <code>gapminder</code> dataset:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.0     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gapminder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1,704 × 6
-   country     continent  year lifeExp      pop gdpPercap
-   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
- 1 Afghanistan Asia       1952    28.8  8425333      779.
- 2 Afghanistan Asia       1957    30.3  9240934      821.
- 3 Afghanistan Asia       1962    32.0 10267083      853.
- 4 Afghanistan Asia       1967    34.0 11537966      836.
- 5 Afghanistan Asia       1972    36.1 13079460      740.
- 6 Afghanistan Asia       1977    38.4 14880372      786.
- 7 Afghanistan Asia       1982    39.9 12881816      978.
- 8 Afghanistan Asia       1987    40.8 13867957      852.
- 9 Afghanistan Asia       1992    41.7 16317921      649.
-10 Afghanistan Asia       1997    41.8 22227415      635.
-# ℹ 1,694 more rows</code></pre>
-</div>
-</div>
-<section id="filtering-rows" class="level2">
-<h2 class="anchored" data-anchor-id="filtering-rows">Filtering rows</h2>
-<p>Oftentimes, we’re only interested in a subset of the observations contained in our data. Say, for example, we only want data on Germany since the 1990s. We can use the <code>filter</code> function to achieve this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(gapminder, country <span class="sc">==</span> <span class="st">"Germany"</span>, year <span class="sc">&gt;=</span> <span class="dv">1990</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 6
-  country continent  year lifeExp      pop gdpPercap
-  &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
-1 Germany Europe     1992    76.1 80597764    26505.
-2 Germany Europe     1997    77.3 82011073    27789.
-3 Germany Europe     2002    78.7 82350671    30036.
-4 Germany Europe     2007    79.4 82400996    32170.</code></pre>
-</div>
-</div>
+<section id="different-types-of-networks" class="level1">
+<h1>Different types of networks</h1>
+<section id="directed-networks" class="level2">
+<h2 class="anchored" data-anchor-id="directed-networks">Directed networks</h2>
+<p>Directed and undirected networks are two fundamental types of networks in network analysis. In a directed network, the connections between nodes have a specific direction, indicating a flow or relationship from one node to another. This type of network is often used to model asymmetric relationships, such as communication or influence. On the other hand, in an undirected network, the connections between nodes are bidirectional and do not have a specific direction. This type of network is commonly used to represent symmetric relationships, such as friendships or collaborations. Understanding the distinction between directed and undirected networks is crucial for analyzing and interpreting network data effectively.</p>
+<section id="symmetrizing" class="level3">
+<h3 class="anchored" data-anchor-id="symmetrizing">Symmetrizing</h3>
 </section>
-<section id="selecting-and-renaming-variables" class="level2">
-<h2 class="anchored" data-anchor-id="selecting-and-renaming-variables">Selecting and renaming variables</h2>
-<p>Similarly, we’re often only interested in a subset of the variables. We can use the <code>select</code> command to select only some variables and also to rename them:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(gapminder, country, year, <span class="at">life_expectancy=</span>lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1,704 × 3
-   country      year life_expectancy
-   &lt;fct&gt;       &lt;int&gt;           &lt;dbl&gt;
- 1 Afghanistan  1952            28.8
- 2 Afghanistan  1957            30.3
- 3 Afghanistan  1962            32.0
- 4 Afghanistan  1967            34.0
- 5 Afghanistan  1972            36.1
- 6 Afghanistan  1977            38.4
- 7 Afghanistan  1982            39.9
- 8 Afghanistan  1987            40.8
- 9 Afghanistan  1992            41.7
-10 Afghanistan  1997            41.8
-# ℹ 1,694 more rows</code></pre>
-</div>
-</div>
 </section>
-<section id="group-summaries" class="level2">
-<h2 class="anchored" data-anchor-id="group-summaries">Group summaries</h2>
-<p>Often, we want to group our data according to one variable (e.g., the continent) and then compute a summary for each of the groups based on another variable (e.g., the mean life expectancy). We can do this by first creating a grouped version of our data using <code>group_by</code> and then using <code>summarize</code> to compute a summary for each group:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_grouped <span class="ot">&lt;-</span> <span class="fu">group_by</span>(gapminder, continent)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(data_grouped, <span class="at">lifeExp_mean =</span> <span class="fu">mean</span>(lifeExp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 2
-  continent lifeExp_mean
-  &lt;fct&gt;            &lt;dbl&gt;
-1 Africa            48.9
-2 Americas          64.7
-3 Asia              60.1
-4 Europe            71.9
-5 Oceania           74.3</code></pre>
-</div>
-</div>
-<p>Note that this drops all other variables except for the grouping variable and the summary variable.</p>
-</section>
-<section id="data-pipelines" class="level2">
-<h2 class="anchored" data-anchor-id="data-pipelines">Data pipelines</h2>
-<p>Typically, data wrangling implies combining multiple of these steps. <code>R</code> allows us to build <em>data pipelines</em> with the pipe operator <code>|&gt;</code> which pipes the output of the operation to the left into the first argument of the operation to the right. Instead of writing <code>filter(data, year &gt; 1990)</code> we could for example write <code>data |&gt; filter(year &gt; 1990)</code>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(gapminder, year <span class="sc">&gt;</span> <span class="dv">1990</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 568 × 6
-   country     continent  year lifeExp      pop gdpPercap
-   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
- 1 Afghanistan Asia       1992    41.7 16317921      649.
- 2 Afghanistan Asia       1997    41.8 22227415      635.
- 3 Afghanistan Asia       2002    42.1 25268405      727.
- 4 Afghanistan Asia       2007    43.8 31889923      975.
- 5 Albania     Europe     1992    71.6  3326498     2497.
- 6 Albania     Europe     1997    73.0  3428038     3193.
- 7 Albania     Europe     2002    75.7  3508512     4604.
- 8 Albania     Europe     2007    76.4  3600523     5937.
- 9 Algeria     Africa     1992    67.7 26298373     5023.
-10 Algeria     Africa     1997    69.2 29072015     4797.
-# ℹ 558 more rows</code></pre>
-</div>
-</div>
-<p>On its own, this is not very useful. However, this syntax allows us to chain multiple operations from left to right or from top to bottom, which is easier to read than nested functions. consider for example the following:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(<span class="fu">filter</span>(gapminder, year <span class="sc">&gt;</span> <span class="dv">1990</span>, country <span class="sc">==</span> <span class="st">"Germany"</span>), year, lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 2
-   year lifeExp
-  &lt;int&gt;   &lt;dbl&gt;
-1  1992    76.1
-2  1997    77.3
-3  2002    78.7
-4  2007    79.4</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># is equivalent to</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;</span> <span class="dv">1990</span>, country <span class="sc">==</span> <span class="st">"Germany"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 2
-   year lifeExp
-  &lt;int&gt;   &lt;dbl&gt;
-1  1992    76.1
-2  1997    77.3
-3  2002    78.7
-4  2007    79.4</code></pre>
-</div>
-</div>
-</section>
-<section id="exercises" class="level2">
-<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
-<ol type="1">
-<li><strong>Build a data pipeline that computes the mean life expectancy and the mean per-capita GDP in Europe for each 5-year period since the 1980s.</strong></li>
-</ol>
-<div class="cell">
-<details class="code-fold">
-<summary>Solution</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">1980</span>) <span class="sc">|&gt;</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country, year) <span class="sc">|&gt;</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">lifeExp_mean=</span><span class="fu">mean</span>(lifeExp),</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">gdpPercap_mean=</span><span class="fu">mean</span>(gdpPercap))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<ol start="2" type="1">
-<li><strong>Reshape the gapminder data into a country-by-year matrix, i.e., a data frame where each row is a country, each column is a year and each cell contains the GDP for that country-year pair.</strong></li>
-</ol>
-<div class="cell">
-<details class="code-fold">
-<summary>Solution</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, year, gdpPercap) <span class="sc">|&gt;</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>year, <span class="at">values_from=</span>gdpPercap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<ol start="3" type="1">
-<li><p><strong>How many entries in gapminder are from after 1960 and come from OECD countries?</strong></p>
-<p>Here’s a list of all countries in the OECD: “Australia”, “Austria”, “Belgium”, “Canada”, “Chile”, “Colombia”, “Costa Rica”, “Czech Republic”, “Denmark”, “Estonia”, “Finland”, “France”, “Germany”, “Greece”, “Hungary”, “Iceland”, “Ireland”, “Israel”, “Italy”, “Japan”, “Korea”, “Latvia”, “Lithuania”, “Luxembourg”, “Mexico”, “Netherlands”, “New Zealand”, “Norway”, “Poland”, “Portugal”, “Slovak Republic”, “Slovenia”, “Spain”, “Sweden”, “Switzerland”, “Turkey”, “United Kingdom”, “United States”</p></li>
-</ol>
-<div class="cell">
-<details class="code-fold">
-<summary>Solution</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>oecd <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Australia"</span>, <span class="st">"Austria"</span>, <span class="st">"Belgium"</span>, <span class="st">"Canada"</span>, <span class="st">"Chile"</span>, <span class="st">"Colombia"</span>, <span class="st">"Costa Rica"</span>, <span class="st">"Czech Republic"</span>, <span class="st">"Denmark"</span>, <span class="st">"Estonia"</span>, <span class="st">"Finland"</span>, <span class="st">"France"</span>, <span class="st">"Germany"</span>, <span class="st">"Greece"</span>, <span class="st">"Hungary"</span>, <span class="st">"Iceland"</span>, <span class="st">"Ireland"</span>, <span class="st">"Israel"</span>, <span class="st">"Italy"</span>, <span class="st">"Japan"</span>, <span class="st">"Korea"</span>, <span class="st">"Latvia"</span>, <span class="st">"Lithuania"</span>, <span class="st">"Luxembourg"</span>, <span class="st">"Mexico"</span>, <span class="st">"Netherlands"</span>, <span class="st">"New Zealand"</span>, <span class="st">"Norway"</span>, <span class="st">"Poland"</span>, <span class="st">"Portugal"</span>, <span class="st">"Slovak Republic"</span>, <span class="st">"Slovenia"</span>, <span class="st">"Spain"</span>, <span class="st">"Sweden"</span>, <span class="st">"Switzerland"</span>, <span class="st">"Turkey"</span>, <span class="st">"United Kingdom"</span>, <span class="st">"United States"</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span> <span class="fu">filter</span>(year <span class="sc">&gt;</span> <span class="dv">1960</span>, country <span class="sc">%in%</span> oecd) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
+<section id="weighted-networks" class="level2">
+<h2 class="anchored" data-anchor-id="weighted-networks">Weighted networks</h2>
+<section id="dichotomizing" class="level3">
+<h3 class="anchored" data-anchor-id="dichotomizing">Dichotomizing</h3>
 
 
+</section>
 </section>
 </section>
 
@@ -872,14 +669,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./02-loading-data.html" class="pagination-link" aria-label="Loading data">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Loading data</span>
+      <a href="./04-plotting.html" class="pagination-link" aria-label="Data visualization">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Data visualization</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./04-plotting.html" class="pagination-link" aria-label="Data visualization">
-        <span class="nav-page-text">Data visualization</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

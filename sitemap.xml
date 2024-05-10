@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/04-plotting.html</loc>
-    <lastmod>2024-05-09T14:23:50.756Z</lastmod>
+    <loc>https://jfb-h.github.io/intro-to-sna/05-networks.html</loc>
+    <lastmod>2024-05-10T06:19:53.645Z</lastmod>
   </url>
   <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/02-loading-data.html</loc>
-    <lastmod>2024-05-09T14:23:50.755Z</lastmod>
+    <loc>https://jfb-h.github.io/intro-to-sna/03-data-handling.html</loc>
+    <lastmod>2024-05-10T07:10:56.312Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/01-basics.html</loc>
+    <lastmod>2024-05-10T07:02:19.509Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/00-index.html</loc>
+    <lastmod>2024-05-10T07:21:12.256Z</lastmod>
   </url>
   <url>
     <loc>https://jfb-h.github.io/intro-to-sna/00-simple-example.html</loc>
     <lastmod>2024-05-09T14:23:50.752Z</lastmod>
   </url>
   <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/00-index.html</loc>
-    <lastmod>2024-05-09T14:23:50.752Z</lastmod>
+    <loc>https://jfb-h.github.io/intro-to-sna/02-loading-data.html</loc>
+    <lastmod>2024-05-10T06:34:19.229Z</lastmod>
   </url>
   <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/01-basics.html</loc>
-    <lastmod>2024-05-09T14:23:50.752Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/03-data-handling.html</loc>
-    <lastmod>2024-05-09T14:23:50.756Z</lastmod>
+    <loc>https://jfb-h.github.io/intro-to-sna/04-plotting.html</loc>
+    <lastmod>2024-05-10T07:09:28.881Z</lastmod>
   </url>
 </urlset>
