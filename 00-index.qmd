@@ -6,7 +6,15 @@ This website accompanies the practical introduction to social network analysis w
 
 The course is targeted at students with limited programming experience. Accordingly, the first couple of sessions include a general introduction to some `R` programming concepts, without delving deeply into the fundamentals.
 
-## TODO
 
-- Course structure table
-- Further reading and resources
+## Course structure
+
+
+| Session | Topic                                       |
+|---------|---------------------------------------------|
+| 1 - 3   | Introduction to R                           |
+| 4 - 5   | Basic network properties                    |
+| 6 - 8   | Centrality measures & ego networks          |
+| 9 - 11  | Network communities & exogeneous groups     |
+| 12      | Modeling network structure I - blockmodels  |
+| 13      | Modeling network structure II - QAP & ERGMs |

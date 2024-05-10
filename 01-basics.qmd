@@ -108,7 +108,7 @@ Large Language Models (LLMs), such as ChatGPT, can be helpful in synthesizing th
 With this in mind, the exercises we do here will frequently go beyond the contents we discussed before. This reflects the process of any real-world project and so will prepare you for pursuing your own research with `R`.
 :::
 
-1.  Assign your name to a variable and call the `greet(...)` function on it which we defined before.
+1.  **Assign your name to a variable and call the `greet(...)` function on it which we defined before.**
 
 ```{r}
 #| code-fold: true
@@ -119,7 +119,7 @@ me <- "Jakob"
 greet(me)
 ```
 
-2.  Copy the `greet()` function from before, rename it to `greet_spanish` and change it so that it says `Hola` instead of `Hello` .
+2.  **Copy the `greet()` function from before, rename it to `greet_spanish` and change it so that it says `Hola` instead of `Hello` .**
 
 ```{r}
 #| code-fold: true
@@ -133,7 +133,7 @@ greet_spanish <- function(name) {
 greet_spanish(me)
 ```
 
-3.  Copy the `greet()` function again but this time change it so that it takes the greeting as a second function argument instead of specifying it in the function body.
+3.  **Copy the `greet()` function again but this time change it so that it takes the greeting as a second function argument instead of specifying it in the function body.**
 
 ```{r}
 #| code-fold: true
@@ -147,7 +147,7 @@ greet_generic <- function(greeting, name) {
 greet_generic("Gruezi", me)
 ```
 
-4.  Create a vector with the numbers from 1 to 100 and assign it to a variable called `x`.
+4.  **Create a vector with the numbers from 1 to 100 and assign it to a variable called `x`.**
 
 ```{r}
 #| code-fold: true
@@ -157,7 +157,7 @@ greet_generic("Gruezi", me)
 x <- 1:100
 ```
 
-5.  Find a function that sorts its input in reverse order and apply it to `x`.
+5.  **Find a function that sorts its input in reverse order and apply it to `x`.**
 
 ```{r}
 #| code-fold: true
@@ -251,16 +251,16 @@ You can also access elements by name using the `$` symbol, which is often prefer
 mylist$mystring
 ```
 
-You can also add new elements to a list this way:
+New elements can also be added to a list this way:
 
 ```{r}
-mylist$newstring = "xyz"
+mylist$newstring <- "xyz"
 mylist
 ```
 
 ## Data frames
 
-A special kind of list that is used to represent tabular data (as in an excel spreadsheet) is the `data.frame`. The elements of a data frame are the columns in the table. Columns are vectors, and thus have to hold elements of the same basic data type (e.g. numbers) and are constrained to be the same length:
+A special kind of list that is used to represent tabular data (as in an excel spreadsheet) is the `data.frame`. The basic entries of a data frame are the columns in the table. Columns are vectors, and thus have to hold elements of the same basic data type (e.g. numbers). In the context of a data frame, the column vectors are also constrained to be the same length:
 
 ```{r}
 df <- data.frame(
@@ -292,7 +292,7 @@ If we try to load a package which has not yet been installed, `RStudio` will pro
 If you put `install.packages("...")` into a code cell, you should probably delete it after running to avoid reinstalling packages everytime you run the notebook. Instead you can also install your packages via the console.
 :::
 
-1.  What is wrong with this piece of code? Find the errors and fix them.
+1. **What is wrong with this piece of code? Find the errors and fix them.**
 
 ```{r}
 #| error: true
@@ -305,7 +305,7 @@ mydf <- data.frame(
   
 ```
 
-2.  Sample 10 numbers from a normal distribution with mean 0 and standard deviation 2 and assign them to a variable called `s`.
+2. **Sample 10 numbers from a normal distribution with mean 0 and standard deviation 2 and assign them to a variable called `s`.**
 
 ```{r}
 #| code-fold: true
@@ -315,7 +315,7 @@ mydf <- data.frame(
 s <- rnorm(10, mean=0, sd=2)
 ```
 
-3.  Compute the empirical mean and the standard deviation of the numbers in `s`.
+3.  **Compute the empirical mean and the standard deviation of the numbers in `s`.**
 
 ```{r}
 #| code-fold: true
@@ -326,7 +326,7 @@ mean(s)
 sd(s)
 ```
 
-4.  Find the minimum and the maximum value of `s` programmatically.
+4.  **Find the minimum and the maximum value of `s` programmatically.**
 
 ```{r}
 #| code-fold: true
@@ -337,7 +337,7 @@ min(s)
 max(s)
 ```
 
-5.  What are the indexes of the minimum and maximum value?
+5.  **What are the indexes of the minimum and maximum value?**
 
 ```{r}
 #| code-fold: true
@@ -348,7 +348,7 @@ which.min(s)
 which.max(s)
 ```
 
-6.  Find (the indexes of) all values in `s` that are larger than 0:
+6.  **Find (the indexes of) all values in `s` that are larger than 0:**
 
 ```{r}
 #| code-fold: true
@@ -359,7 +359,7 @@ idx <- which(s > 0)
 s[idx]
 ```
 
-7.  Split the following string at the comma to produce a vector of three strings:
+7.  **Split the following string at the comma to produce a vector of three strings:**
 
 ```{r}
 names <- "Tim,Tom,Tina"
@@ -374,7 +374,7 @@ library(stringr)
 str_split1(names, ",")
 ```
 
-8.  Here is a slightly more complex piece of code. Use your online resources to get help with understanding what each line is doing.
+8.  **Here is a slightly more complex piece of code. Use your online resources to get help with understanding what each line is doing.**
 
 ```{r}
 #| eval: false

@@ -67,25 +67,43 @@ gapminder |>
 
 ## Exercises
 
-1.  Build a data pipeline that computes the mean life expectancy and the mean per-capita GDP in Europe for each 5-year period since the 1980s.
-
-```{r echo=FALSE}
-
-# Write your code here...
-```
-
-2.  Reshape the gapminder data into a country-by-year matrix, i.e., a data frame where each row is a country, each column is a year and each cell contains the GDP for that country-year pair.
+1.  **Build a data pipeline that computes the mean life expectancy and the mean per-capita GDP in Europe for each 5-year period since the 1980s.**
 
 ```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-# Write your code here...
+gapminder |>
+  filter(year >= 1980) |>
+  group_by(country, year) |>
+  summary(
+    lifeExp_mean=mean(lifeExp),
+    gdpPercap_mean=mean(gdpPercap))
 ```
 
-3.  How many entries in gapminder are from after 1960 and come from OECD countries?
+2.  **Reshape the gapminder data into a country-by-year matrix, i.e., a data frame where each row is a country, each column is a year and each cell contains the GDP for that country-year pair.**
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+gapminder |>
+  select(country, year, gdpPercap) |>
+  pivot_wider(names_from=year, values_from=gdpPercap)
+```
+
+3.  **How many entries in gapminder are from after 1960 and come from OECD countries?**
 
     Here's a list of all countries in the OECD: "Australia", "Austria", "Belgium", "Canada", "Chile", "Colombia", "Costa Rica", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Israel", "Italy", "Japan", "Korea", "Latvia", "Lithuania", "Luxembourg", "Mexico", "Netherlands", "New Zealand", "Norway", "Poland", "Portugal", "Slovak Republic", "Slovenia", "Spain", "Sweden", "Switzerland", "Turkey", "United Kingdom", "United States"
 
 ```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-# Write your code here...
+oecd <- c("Australia", "Austria", "Belgium", "Canada", "Chile", "Colombia", "Costa Rica", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Israel", "Italy", "Japan", "Korea", "Latvia", "Lithuania", "Luxembourg", "Mexico", "Netherlands", "New Zealand", "Norway", "Poland", "Portugal", "Slovak Republic", "Slovenia", "Spain", "Sweden", "Switzerland", "Turkey", "United Kingdom", "United States")
+
+gapminder |> filter(year > 1960, country %in% oecd) |> nrow()
 ```

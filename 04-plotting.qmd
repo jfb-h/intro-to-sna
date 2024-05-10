@@ -45,79 +45,179 @@ At this point we have a basic plot, which we can now customize to our heart's co
 
 Use the jointly created code and add to it to solve the following tasks:
 
-1.  Change the color of the points to blue.
+1.  **Change the color of the points to blue.**
 
-    ```{r}
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-    # Write your code here...
-    ```
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp)) +   
+  geom_point(color="blue")
+```
 
-2.  Make the points transparent, so that it is easier to see overlapping data.
+2.  **Make the points transparent, so that it is easier to see overlapping data.**
 
-    ```{r}
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-    # Write your code here...
-    ```
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp)) +   
+  geom_point(color="blue", alpha=0.2)
+```
 
-3.  Specify a log scale for GDP.
+3.  **Specify a log scale for GDP.**
 
-    ```{r}
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-    # Write your code here...
-    ```
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp)) +   
+  geom_point(color="blue", alpha=0.2) +   
+  scale_x_log10()
+```
 
-4.  Color the points by continent.
+4.  **Color the points by continent.**
 
-    ```{r}
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-    # Write your code here...
-    ```
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp, color=continent)) +   
+  geom_point() + 
+  scale_x_log10()
+```
 
-5.  Add more readable labels to the plot.
+5.  **Add more readable labels to the plot.**
 
-    ```{r}
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-    # Write your code here...
-    ```
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp, color=continent)) +   
+  geom_point() + 
+  scale_x_log10() +   
+  labs(x="GDP per capita (log scale)", y="Life expectancy (years)")
+```
 
-6.  Add a title and a subtitle to the plot.
+6.  **Add a title and a subtitle to the plot.**
 
-    ```{r}
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-    # Write your code here...
-    ```
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp, color=continent)) +   
+  geom_point() +
+  scale_x_log10() +
+  labs(     
+    x="GDP per capita (log scale)",      
+    y="Life expectancy (years)",     
+    title="GDP vs. life expectancy",     
+    subtitle="Data for ~130 countries over a period of 60 years")
+```
 
-7.  Find different plot themes and pick one.
+7.  **Apply a different theme to your plot.**
 
-    ```{r}
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-    # Write your code here...
-    ```
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp, color=continent)) +   
+  geom_point() + 
+  scale_x_log10() +   
+  theme_minimal() + 
+  labs(
+    x="GDP per capita (log scale)",      
+    y="Life expectancy (years)",     
+    title="GDP vs. life expectancy",     
+    subtitle="Data for ~130 countries over a period of 60 years")  
+```
 
-8.  Move the legend to the bottom of the plot.
+8.  **Move the legend to the bottom of the plot.**
 
-    ```{r}
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-    # Write your code here...
-    ```
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp, color=continent)) +   
+  geom_point() + 
+  scale_x_log10() +   
+  theme_minimal() + 
+  theme(legend.position="bottom") +
+  labs(     
+    x="GDP per capita (log scale)",      
+    y="Life expectancy (years)",     
+    title="GDP vs. life expectancy",     
+    subtitle="Data for ~130 countries over a period of 60 years")  
+```
 
-    9.  Add a regression line to the plot.
+9.  **Add a regression line to the plot.**
 
-    ```{r}
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-    # Write your code here...
-    ```
 
-9.  Save the plot as a `.png` file.
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp, color=continent)) +   
+  geom_point() + 
+  geom_smooth(method="lm", color="red") +
+  scale_x_log10() +   
+  theme_minimal() + 
+  theme(legend.position="bottom") +
+  labs(     
+    x="GDP per capita (log scale)",      
+    y="Life expectancy (years)",     
+    title="GDP vs. life expectancy",     
+    subtitle="Data for ~130 countries over a period of 60 years")  
 
-    ```{r}
+```
 
-    # Write your code here...
-    ```
+9.  **Save the plot as a `.png` file.**
 
-10. Visualize the population development by continent. Think about what you would want the plot to look like first and then identify the corresponding `geom_*`.
+```{r, fig.width=10, fig.height=10}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
 
-    ```{r}
+p1 <- ggplot(gapminder, aes(x=gdpPercap, y=lifeExp, color=continent)) +   
+  geom_point() + 
+  geom_smooth(method="lm", color="red") +
+  scale_x_log10() +   
+  theme_minimal() + 
+  theme(legend.position="bottom") +
+  labs(     
+    x="GDP per capita (log scale)",      
+    y="Life expectancy (years)",     
+    title="GDP vs. life expectancy",     
+    subtitle="Data for ~130 countries over a period of 60 years")  
 
-    # Write your code here...
-    ```
+
+ggsave("gdp-lifeexp.png", p1, width=30, height=20, units = "cm")
+
+```
+
+10. **Visualize the population development by continent. Think about what you would want the plot to look like first and then identify the corresponding `geom_*`.**
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+dat <- gapminder |> 
+    group_by(year, continent) |>
+    summarize(pop=sum(pop))
+
+ggplot(dat, aes(x=year, y=pop, color=continent)) +
+    geom_line() +
+    theme_minimal() +
+    theme(legend.position="bottom") + 
+    labs(x="", y="Population", title="Population growth by continent")
+```

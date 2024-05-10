@@ -5,7 +5,7 @@ editor: visual
 
 # Different types of networks
 
-## Directed and undirected networks
+## Directed networks
 
 Directed and undirected networks are two fundamental types of networks in network analysis. In a directed network, the connections between nodes have a specific direction, indicating a flow or relationship from one node to another. This type of network is often used to model asymmetric relationships, such as communication or influence. On the other hand, in an undirected network, the connections between nodes are bidirectional and do not have a specific direction. This type of network is commonly used to represent symmetric relationships, such as friendships or collaborations. Understanding the distinction between directed and undirected networks is crucial for analyzing and interpreting network data effectively.
 

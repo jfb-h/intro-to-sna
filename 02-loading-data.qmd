@@ -68,10 +68,14 @@ When loading a csv file with `read_csv`, we get some information about the autom
 
 ## Exercises
 
-1.  Identify the data format of the file `data.csv` and find a function/package to load your data into `R`.
-2.  Identify the correct specification and arguments for loading your data and load your data into a `data.frame`.
+1.  **Identify the data format of the file `data.csv` and find a function/package to load your data into `R`.**
+2.  **Identify the correct specification and arguments for loading your data and load your data into a `data.frame`.**
 
 ```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
 library(readr)
 data <- read_csv2("data/data.csv")
 ```
