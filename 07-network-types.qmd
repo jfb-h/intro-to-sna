@@ -1,0 +1,175 @@
+---
+title: "network-basics"
+author: "Jakob Hoffmann"
+format: 
+  html:
+    embed-resources: true
+editor: visual
+---
+
+# Types of networks
+
+Networks can be categorized in various ways depending on their characteristics. We will cover three types of networks here: *directed* and *undirected* networks, *weighted* and *unweighted* networks, and *unipartite* and *bipartite* networks.
+
+We start by loading the necessary packages and reading an edgelist from a `.csv` file into a data frame:
+
+```{r}
+library(network)
+library(readr)
+```
+
+## Directed and undirected networks
+
+A directed network (or digraph) is a network where the edges have a direction, i.e., they distinguish between a source and a target node. Inherent asymmetry of ties is the case for many real world networks, such as advice giving, money lending, or the transmission of infectious diseases.
+
+However, not all relations are inherently asymmetric (e.g., friendships), and sometimes it is necessary to drop edge directions for analytic reasons.
+
+In `R`, we can specify upon construction whether a `network` should be directed or not, using the `directed = TRUE/FALSE` flag. E.g. for this data frame representing an edgelist:
+
+```{r}
+edgelist <- data.frame(
+  sender   = c(1,1,2,2,3,3,3),
+  receiver = c(2,3,1,4,1,2,4)
+)
+```
+
+We can construct directed and undirected variants in the following way:
+
+```{r}
+
+directed <- network(edgelist, directed = TRUE)
+
+undirected <- network(edgelist, directed = FALSE)
+```
+
+### Symmetrization
+
+If we have a directed network but want an undirected one, we can *symmetrize* it. Networks can be symmetrized in multiple different ways, with the two common rules being the "weak" rule and the "strong" rule.
+
+Weak rule symmetrization is the more permissive approach and adds an undirected edge between two nodes if there is an edge in at least one direction in the original network. In contrast, the strong rule requires an edge to be present in both directions for the edge to be present in the symmetrized network.
+
+Symmetrization can be achieved in `R` using the `symmetrize(...)` function:
+
+```{r}
+adj_sym <- symmetrize(directed, rule = "weak")
+```
+
+Since this function returns a symmetrized adjacency matrix, we also need to reconstruct our network if we want a `network` object, where we also explicitly pass `directed = FALSE`:
+
+```{r}
+net_sym <- network(adj_sym, directed=FALSE)
+```
+
+## Weighted and unweighted networks
+
+A weighted network is a network where the edges have weights representing the strength or intensity of the relationship between nodes.
+
+Similarly to directed networks, edge weights are common in many real-world scenarios, such as transportation or trade networks, where weights could represent the distance or trade volume between countries.
+
+The easiest way to construct a weighted network in `R` is by passing an adjacency matrix to the network function where the cells represent edge weights and not just the presence or absence of an edge.
+
+To demonstrate, we can simulate a weighted adjacency matrix with random values:
+
+```{r}
+adj_weighted <- matrix(rnorm(16), nrow = 4, ncol = 4)
+adj_weighted
+```
+
+By default, the `network(...)` function ignores edge values/weights. We here accordingly specify `ignore.eval = FALSE` and specify a name for our weights by setting `names.eval = "name"`:
+
+```{r}
+net_weighted <- network(adj_weighted, 
+                        ignore.eval = FALSE, 
+                        names.eval = "weight")
+net_weighted
+```
+
+### Dichotomization
+
+If we have a weighted network but want a simple unweighted network, where edges are either present or not, we can *dichotomize* the adjacency matrix. This just means picking a threshold value and keeping all edges above that value while discarding the rest.
+
+We can accomplish this in `R` using the `ifelse(...)` function, which checks a condition and returns one or another value depending on whether it is met:
+
+```{r}
+thresh <- 0.3 # threshold value
+adj_dicho <- ifelse(adj_weighted > thresh, 1, 0)
+adj_dicho
+```
+
+In the dichotomized matrix, all cells with a value of $0.3$ or more are set to $1$ while all cells below the threshold are set to a $0$. We can then pass the dichotomized adjacency matrix to the network constructor again:
+
+```{r}
+net_dicho <- network(adj_dicho)
+```
+
+## Unipartite vs. bipartite networks
+
+Another commonly encountered type of network are bipartite (or bimodal) networks. In a bipartite network, there are two different kinds of nodes and only nodes of different kinds can be connected through an edge.
+
+A classical example of this is a network of event attendances where the two different sets of nodes represent people and events, respectively, and edges indicate that a person attended an event.
+
+Bipartite networks are easily represented with a regular edgelist:
+
+```{r}
+edgelist <- data.frame(
+  person = c("A", "A", "A", "B", "B"),
+  event  = c("X", "Y", "Z", "X", "Y")
+)
+```
+
+To construct a `network` object, we can pass this to the network constructor alongside the `bipartite = TRUE` flag:
+
+```{r}
+net_bipartite <- network(edgelist, bipartite = TRUE, directed = FALSE)
+net_bipartite
+```
+
+The `bipartite = 2` in the printed summary indicates the number of nodes in the first partition.
+
+We can use the bipartite nature of this network for plotting by passing the `gmode = "twomode"` flag to the `gplot(...)` function:
+
+```{r}
+gplot(net_bipartite, gmode = "twomode", usearrows = FALSE)
+```
+
+### Projecting bipartite networks
+
+There are two unipartite networks we could create from our bipartite network by projection:
+
+1.  A network of events which indicates whether two events were visited by the same people.
+2.  A network of people which indicates whether two people attended the same events.
+
+We can obtain both of these with a little bit of linear algebra on the incidence matrix, which, as opposed to a regular adjacency matrix, is not necessarily quadratic anymore:
+
+```{r}
+inc <- as.matrix(net_bipartite)
+inc
+```
+
+If we multiply this matrix with its transpose, we obtain a weighted adjacency matrix representing the co-attendance count for the two people in the network:
+
+```{r}
+inc %*% t(inc)
+```
+
+If we change the order of the factors in the product, we obtain the co-attendance matrix for events:
+
+```{r}
+t(inc) %*% inc
+```
+
+We can then proceed to create networks from these, as for regular weighted adjacency matrices.
+
+## Exercises
+
+1.  Load the advice network in the file `data/lazega_advice.csv` into a directed network object.
+
+    ```{r}
+    # Write your code here...
+    ```
+
+2.  Symmetrize the network using the weak rule.
+
+    ```{r}
+    # Write your code here...
+    ```

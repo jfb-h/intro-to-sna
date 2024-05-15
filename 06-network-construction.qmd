@@ -1,0 +1,190 @@
+---
+title: "network-basics"
+author: "Jakob Hoffmann"
+format: 
+  html:
+    embed-resources: true
+editor: visual
+---
+
+# Representing networks in data
+
+Networks can be represented in various formats, each offering its own advantages: Edgelists, for example, are good for storing and passing around networks, while adjacency lists or adjacency matrices are often preferable for computation.
+
+Software packages for network analysis, such as `statnet` or `igraph`, usually hide the underlying data structure used for computation as an implementation detail while allowing import and export from/to a wide range of formats.
+
+In the following, we will make use of the `network` and `sna` `R` packages to explore conversion from and to a range of network representations:
+
+```{r}
+# uncomment the line below if you have not yet installed the packages
+# install.packages(c("network", "sna"))
+
+library(network)
+library(sna)
+```
+
+## The edgelist
+
+The simplest way to represent a network is as a list of edges, aptly called an *edgelist*. We can store such an edgelist as a table with two columns where each row represents an edge and the first column holds the sender and the second column the receiver of an edge.
+
+In `R`, one way to represent this would be a `data.frame`:
+
+```{r}
+edgelist <- data.frame(sender = c(1,1,1), receiver = c(2,3,4))
+edgelist
+```
+
+Usually, we don't use this edgelist for computing a measure of interest directly. Instead, we convert it to the `network(...)` format contained in the `network` package (which is contained in the `statnet` suite):
+
+```{r}
+net1 <- network(edgelist, directed = FALSE)
+```
+
+The `network(...)` function is quite smart and will often detect the appropriate format from the input argument. Data frames, e.g. will be treated as edgelists, while matrices will be treated as adjacency matrices. The function furthermore supports a wide range of arguments for specifying the kind of network that should be produced (e.g. directed vs. undirected).
+
+If we print the produced network `net1`, it will show us some general information, such as the number of nodes and the number of edges, its basic properties and contained node and edge attributes:
+
+```{r}
+net1
+```
+
+We can pass this network object to the plethora of functions defined in the `network` and `sna` packages, such as `gplot(...)` to produce a plot of the network graph:
+
+```{r}
+gplot(net1, gmode = "graph", label = 1:4)
+```
+
+## The adjacency matrix
+
+A second important representation of a network is the *adjacency matrix*. For a network of size $N$ (i.e., a network with $N$ nodes), the adjacency matrix is a $N \times N$ matrix (i.e., a matrix with $N$ rows and columns). In this matrix, the cell indicated by the $i$th row and the $j$th column is $1$ if there is an edge from node $i$ to node $j$ and $0$ otherwise (for the case of an unweighted network).
+
+In `R` we could construct an adjacency matrix manually using the `matrix(...)` function:
+
+```{r}
+adjmat <- matrix(data = c(0,1,1,1, 
+                          1,0,0,0, 
+                          1,0,0,0, 
+                          1,0,0,0), nrow = 4, ncol = 4, byrow = T)
+
+adjmat
+```
+
+As before for the edgelist, we can pass this matrix to the `network(...)` function to construct a network object from the adjacency matrix:
+
+```{r}
+net2 <- network(adjmat, directed = FALSE)
+```
+
+We can again print and plot this network object to see that it has the same structure as `net1`, which was constructed from an edgelist representing the same network:
+
+```{r}
+net2
+```
+
+```{r}
+ gplot(net1, gmode = "graph", label = 1:4)
+```
+
+### Reading an adjacency matrix from a csv file
+
+We can also read an adjacency matrix that is stored in a `.csv` file using, e.g., the built-in `read.table(...)` function. Here, we need to pass some additional arguments because the file contains row names in the first column (thus we specify `row.names = 1`) and uses numeric names, which by default are invalid (so we pass `check.names = FALSE`).
+
+```{r}
+adjmat <- read.table("data/lazega_advice.csv", 
+                     sep =";", 
+                     header = TRUE, 
+                     row.names = 1, 
+                     check.names = FALSE)
+```
+
+Because `adjmat` is a data frame right now but we usually want to represent an adjacency matrix with `R`'s built-in `matrix` type, we need to convert it first:
+
+```{r}
+adjmat <- as.matrix(adjmat)
+```
+
+We can check that the matrix is quadratic (i.e. has as many rows as it has columns):
+
+```{r}
+nrow(adjmat) == ncol(adjmat) 
+```
+
+and that the column names are equal to the row names:
+
+```{r}
+all(colnames(adjmat) == rownames(adjmat))
+```
+
+Now we have done some validation that we loaded the data correctly, we can pass the adjacency matrix to the `network(...)` function to construct a network:
+
+```{r}
+net <- network(adjmat, directed = TRUE)
+```
+
+## There and back again
+
+`R` and the `network` package allow us to also go the other way, e.g. creating an edgelist from a `network` object:
+
+```{r}
+el <- as.edgelist(net1, output="tibble") # `tibble` is how data frames are called in the tidyverse
+el
+```
+
+The same also goes for adjacency matrices:
+
+```{r}
+adj <- as.matrix(net1)
+adj
+```
+
+A couple of sessions ago, we saw how to *index* into a vector using square brackets (e.g. `myvec[1]`). We can do the same for our adjacency matrix, using two indices (the first for the row and the second for the column):
+
+```{r}
+adj[1,2]
+```
+
+This tells us that there is an edge in our network from node 1 to node 2.
+
+Indexing into the network is even directly supported for `network` objects, using the same indexing syntax:
+
+```{r}
+net1[1,2]
+```
+
+## Exercises
+
+1.  Load the adjacency matrix contained in the file `data/lazega_advice.csv` into a data frame.
+
+    ```{r}
+    # Write your code here...
+    ```
+
+2.  Create an undirected network from the adjacency matrix.
+
+    ```{r}
+    # Write your code here...
+    ```
+
+3.  How many nodes and edges does the network have?
+
+    ```{r}
+    # Write your code here...
+    ```
+
+4.  Plot the network. Color the nodes black and the edges grey.
+
+    ```{r}
+    # Write your code here...
+    ```
+
+5.  Get the edgelist for the network and write it to a `.csv` file.
+
+    ```{r}
+    # Write your code here...
+    ```
+
+6.  Index into the adjacency matrix to find out whether node 2 and node 4 are connected.
+
+    ```{r}
+    # Write your code here...
+    ```

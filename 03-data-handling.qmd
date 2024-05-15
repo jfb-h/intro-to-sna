@@ -9,7 +9,9 @@ Data wrangling refers to all the steps that need to be taken before the actual a
 
 Data wrangling comprises, e.g., filtering out bad data, selecting a subset of available data, reshaping data into a more useful format, or computing derivative measures and summaries. In the following, we will look at some of the most frequently needed operations and how to apply them using the `tidyverse`.
 
-We will again do so using the `gapminder` dataset:
+This tutorial only gives a glimpse at the possibilities of data wrangling in `R`. For a much more comprehensive introduction see the great and free [R for Data Science](https://r4ds.hadley.nz/) online book.
+
+For the following tutorial, we will again make use of the `gapminder` dataset:
 
 ```{r}
 library(gapminder)
