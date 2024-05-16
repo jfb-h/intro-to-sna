@@ -265,14 +265,18 @@ window.Quarto = {
   <li><a href="#directed-and-undirected-networks" id="toc-directed-and-undirected-networks" class="nav-link" data-scroll-target="#directed-and-undirected-networks">Directed and undirected networks</a>
   <ul class="collapse">
   <li><a href="#symmetrization" id="toc-symmetrization" class="nav-link" data-scroll-target="#symmetrization">Symmetrization</a></li>
+  <li><a href="#ploting-directed-and-undirected-networks" id="toc-ploting-directed-and-undirected-networks" class="nav-link" data-scroll-target="#ploting-directed-and-undirected-networks">Ploting directed and undirected networks</a></li>
   </ul></li>
   <li><a href="#weighted-and-unweighted-networks" id="toc-weighted-and-unweighted-networks" class="nav-link" data-scroll-target="#weighted-and-unweighted-networks">Weighted and unweighted networks</a>
   <ul class="collapse">
   <li><a href="#dichotomization" id="toc-dichotomization" class="nav-link" data-scroll-target="#dichotomization">Dichotomization</a></li>
+  <li><a href="#plotting-weighted-networks" id="toc-plotting-weighted-networks" class="nav-link" data-scroll-target="#plotting-weighted-networks">Plotting weighted networks</a></li>
   </ul></li>
   <li><a href="#unipartite-vs.-bipartite-networks" id="toc-unipartite-vs.-bipartite-networks" class="nav-link" data-scroll-target="#unipartite-vs.-bipartite-networks">Unipartite vs.&nbsp;bipartite networks</a>
   <ul class="collapse">
   <li><a href="#projecting-bipartite-networks" id="toc-projecting-bipartite-networks" class="nav-link" data-scroll-target="#projecting-bipartite-networks">Projecting bipartite networks</a></li>
+  <li><a href="#plotting-bipartite-networks" id="toc-plotting-bipartite-networks" class="nav-link" data-scroll-target="#plotting-bipartite-networks">Plotting bipartite networks</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   </ul></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul></li>
@@ -338,6 +342,31 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>net_sym <span class="ot">&lt;-</span> <span class="fu">network</span>(adj_sym, <span class="at">directed=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="ploting-directed-and-undirected-networks" class="level3">
+<h3 class="anchored" data-anchor-id="ploting-directed-and-undirected-networks">Ploting directed and undirected networks</h3>
+<p>Directed edges are usually represented by arrows in a network plot. If we pass a directed network to <code>gplot(...)</code>, this is the default (because the default value of the <code>gmode</code> argument is <code>digraph</code>):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(directed, <span class="at">label =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-network-types_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If we want to plot an undirected network, we include <code>gmode = "digraph"</code> in the call to <code>gplot</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(net_sym, <span class="at">gmode =</span> <span class="st">"graph"</span>, <span class="at">label =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-network-types_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="weighted-and-unweighted-networks" class="level2">
 <h2 class="anchored" data-anchor-id="weighted-and-unweighted-networks">Weighted and unweighted networks</h2>
@@ -346,22 +375,22 @@ window.Quarto = {
 <p>The easiest way to construct a weighted network in <code>R</code> is by passing an adjacency matrix to the network function where the cells represent edge weights and not just the presence or absence of an edge.</p>
 <p>To demonstrate, we can simulate a weighted adjacency matrix with random values:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>adj_weighted <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">16</span>), <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>adj_weighted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>adj_weighted <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">16</span>), <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>adj_weighted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>            [,1]       [,2]       [,3]       [,4]
-[1,] -0.01394481  0.5552889 -2.0217805  1.0155972
-[2,] -0.34787482 -0.5529046 -1.1587837  0.4065046
-[3,] -1.18484400 -1.0945557  0.4138699 -0.7872822
-[4,] -0.15674042  0.8898145 -0.6458611 -0.4780413</code></pre>
+<pre><code>           [,1]       [,2]       [,3]       [,4]
+[1,]  0.4916556  0.7430118  0.3829974 -0.9293158
+[2,] -0.4842356  0.5528987  1.2663910 -0.4169155
+[3,] -0.7392497 -0.5851660  1.8773884 -0.6609479
+[4,]  0.2556204  0.8740241 -0.3391600 -0.3104490</code></pre>
 </div>
 </div>
 <p>By default, the <code>network(...)</code> function ignores edge values/weights. We here accordingly specify <code>ignore.eval = FALSE</code> and specify a name for our weights by setting <code>names.eval = "name"</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>net_weighted <span class="ot">&lt;-</span> <span class="fu">network</span>(adj_weighted, </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ignore.eval =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">names.eval =</span> <span class="st">"weight"</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>net_weighted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>net_weighted <span class="ot">&lt;-</span> <span class="fu">network</span>(adj_weighted, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ignore.eval =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">names.eval =</span> <span class="st">"weight"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>net_weighted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Network attributes:
   vertices = 4 
@@ -386,20 +415,34 @@ window.Quarto = {
 <p>If we have a weighted network but want a simple unweighted network, where edges are either present or not, we can <em>dichotomize</em> the adjacency matrix. This just means picking a threshold value and keeping all edges above that value while discarding the rest.</p>
 <p>We can accomplish this in <code>R</code> using the <code>ifelse(...)</code> function, which checks a condition and returns one or another value depending on whether it is met:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>thresh <span class="ot">&lt;-</span> <span class="fl">0.3</span> <span class="co"># threshold value</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>adj_dicho <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(adj_weighted <span class="sc">&gt;</span> thresh, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>adj_dicho</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>thresh <span class="ot">&lt;-</span> <span class="fl">0.3</span> <span class="co"># threshold value</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>adj_dicho <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(adj_weighted <span class="sc">&gt;</span> thresh, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>adj_dicho</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4]
-[1,]    0    1    0    1
-[2,]    0    0    0    1
+[1,]    1    1    1    0
+[2,]    0    1    1    0
 [3,]    0    0    1    0
 [4,]    0    1    0    0</code></pre>
 </div>
 </div>
 <p>In the dichotomized matrix, all cells with a value of <span class="math inline">\(0.3\)</span> or more are set to <span class="math inline">\(1\)</span> while all cells below the threshold are set to a <span class="math inline">\(0\)</span>. We can then pass the dichotomized adjacency matrix to the network constructor again:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>net_dicho <span class="ot">&lt;-</span> <span class="fu">network</span>(adj_dicho)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>net_dicho <span class="ot">&lt;-</span> <span class="fu">network</span>(adj_dicho)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="plotting-weighted-networks" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-weighted-networks">Plotting weighted networks</h3>
+<p>If we want to include weights in our plot, we can scale the width of the edges in the plot according to their weight by setting the argument <code>edge.lwd</code> to the weighted adjacency matrix (possibly multiplied by a scaling factor or transformed by some other function):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(net_weighted, <span class="at">edge.lwd =</span> <span class="dv">8</span> <span class="sc">*</span> adj_weighted)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-network-types_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 </section>
@@ -409,15 +452,15 @@ window.Quarto = {
 <p>A classical example of this is a network of event attendances where the two different sets of nodes represent people and events, respectively, and edges indicate that a person attended an event.</p>
 <p>Bipartite networks are easily represented with a regular edgelist:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>edgelist <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">person =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>),</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">event  =</span> <span class="fu">c</span>(<span class="st">"X"</span>, <span class="st">"Y"</span>, <span class="st">"Z"</span>, <span class="st">"X"</span>, <span class="st">"Y"</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>edgelist <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">person =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">event  =</span> <span class="fu">c</span>(<span class="st">"X"</span>, <span class="st">"Y"</span>, <span class="st">"Z"</span>, <span class="st">"X"</span>, <span class="st">"Y"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To construct a <code>network</code> object, we can pass this to the network constructor alongside the <code>bipartite = TRUE</code> flag:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>net_bipartite <span class="ot">&lt;-</span> <span class="fu">network</span>(edgelist, <span class="at">bipartite =</span> <span class="cn">TRUE</span>, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>net_bipartite</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>net_bipartite <span class="ot">&lt;-</span> <span class="fu">network</span>(edgelist, <span class="at">bipartite =</span> <span class="cn">TRUE</span>, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>net_bipartite</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Network attributes:
   vertices = 5 
@@ -437,17 +480,6 @@ No edge attributes</code></pre>
 </div>
 </div>
 <p>The <code>bipartite = 2</code> in the printed summary indicates the number of nodes in the first partition.</p>
-<p>We can use the bipartite nature of this network for plotting by passing the <code>gmode = "twomode"</code> flag to the <code>gplot(...)</code> function:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(net_bipartite, <span class="at">gmode =</span> <span class="st">"twomode"</span>, <span class="at">usearrows =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="06-network-types_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 <section id="projecting-bipartite-networks" class="level3">
 <h3 class="anchored" data-anchor-id="projecting-bipartite-networks">Projecting bipartite networks</h3>
 <p>There are two unipartite networks we could create from our bipartite network by projection:</p>
@@ -457,8 +489,8 @@ No edge attributes</code></pre>
 </ol>
 <p>We can obtain both of these with a little bit of linear algebra on the incidence matrix, which, as opposed to a regular adjacency matrix, is not necessarily quadratic anymore:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>inc <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(net_bipartite)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>inc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>inc <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(net_bipartite)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>inc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  X Y Z
 A 1 1 1
@@ -467,7 +499,7 @@ B 1 1 0</code></pre>
 </div>
 <p>If we multiply this matrix with its transpose, we obtain a weighted adjacency matrix representing the co-attendance count for the two people in the network:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>inc <span class="sc">%*%</span> <span class="fu">t</span>(inc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>inc <span class="sc">%*%</span> <span class="fu">t</span>(inc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  A B
 A 3 2
@@ -476,7 +508,7 @@ B 2 2</code></pre>
 </div>
 <p>If we change the order of the factors in the product, we obtain the co-attendance matrix for events:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(inc) <span class="sc">%*%</span> inc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(inc) <span class="sc">%*%</span> inc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  X Y Z
 X 2 2 1
@@ -486,17 +518,48 @@ Z 1 1 1</code></pre>
 </div>
 <p>We can then proceed to create networks from these, as for regular weighted adjacency matrices.</p>
 </section>
+<section id="plotting-bipartite-networks" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-bipartite-networks">Plotting bipartite networks</h3>
+<p>We can use the bipartite nature of this network for plotting by passing the <code>gmode = "twomode"</code> flag to the <code>gplot(...)</code> function. This will show the two sets of nodes in different colors and with different symbols:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(net_bipartite, <span class="at">gmode =</span> <span class="st">"twomode"</span>, <span class="at">usearrows =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-network-types_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+</section>
 </section>
 <section id="exercises" class="level2">
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
 <ol type="1">
 <li><p>Load the advice network in the file <code>data/lazega_advice.csv</code> into a directed network object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write your code here...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write your code here...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
 <li><p>Symmetrize the network using the weak rule.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write your code here...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write your code here...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Symmetrize the network using the strong rule.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write your code here...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Plot the symmetrized network next to the original with the correct arguments for an undirected network.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)) <span class="co"># DON'T CHANGE THIS</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Write your plotting functions here...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Compare the two symmetrized variants visually and in terms of their basic properties. What do you observe?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write your code here...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
 </ol>
 
