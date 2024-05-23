@@ -1,13 +1,9 @@
 ---
-title: "network-basics"
-author: "Jakob Hoffmann"
-format: 
-  html:
-    embed-resources: true
+title: "Representing networks in R"
 editor: visual
 ---
 
-# Representing networks in data
+# Network representations
 
 Networks can be represented in various formats, each offering its own advantages: Edgelists, for example, are good for storing and passing around networks, while adjacency lists or adjacency matrices are often preferable for computation.
 
@@ -16,6 +12,10 @@ Software packages for network analysis, such as `statnet` or `igraph`, usually h
 In the following, we will make use of the `network` and `sna` `R` packages to explore conversion from and to a range of network representations:
 
 ```{r}
+#| warning: false
+#| error: false
+#| output: false
+
 # uncomment the line below if you have not yet installed the packages
 # install.packages(c("network", "sna"))
 
@@ -34,7 +34,7 @@ edgelist <- data.frame(sender = c(1,1,1), receiver = c(2,3,4))
 edgelist
 ```
 
-Usually, we don't use this edgelist for computing a measure of interest directly. Instead, we convert it to the `network(...)` format contained in the `network` package (which is contained in the `statnet` suite):
+Usually, we don't use this edgelist for computing a measure of interest directly. Instead, we convert it to the `network` type defined in the `network` package (which is contained in the `statnet` suite):
 
 ```{r}
 net1 <- network(edgelist, directed = FALSE)
@@ -85,6 +85,22 @@ net2
  gplot(net1, gmode = "graph", label = 1:4)
 ```
 
+### Indexing into an adjacency matrix
+
+A couple of sessions ago, we saw how to *index* into a vector using square brackets (e.g. `myvec[1]`). We can do the same for our adjacency matrix, using two indices (the first for the row and the second for the column):
+
+```{r}
+adjmat[1,2]
+```
+
+This tells us that there is an edge in our network from node 1 to node 2.
+
+Indexing into the network is even directly supported for `network` objects, using the same indexing syntax:
+
+```{r}
+net1[1,2]
+```
+
 ### Reading an adjacency matrix from a csv file
 
 We can also read an adjacency matrix that is stored in a `.csv` file using, e.g., the built-in `read.table(...)` function. Here, we need to pass some additional arguments because the file contains row names in the first column (thus we specify `row.names = 1`) and uses numeric names, which by default are invalid (so we pass `check.names = FALSE`).
@@ -115,7 +131,7 @@ and that the column names are equal to the row names:
 all(colnames(adjmat) == rownames(adjmat))
 ```
 
-Now we have done some validation that we loaded the data correctly, we can pass the adjacency matrix to the `network(...)` function to construct a network:
+Now that we have done some validation that we loaded the data correctly, we can pass the adjacency matrix to the `network(...)` function to construct a network:
 
 ```{r}
 net <- network(adjmat, directed = TRUE)
@@ -123,37 +139,25 @@ net <- network(adjmat, directed = TRUE)
 
 ## There and back again
 
-`R` and the `network` package allow us to also go the other way, e.g. creating an edgelist from a `network` object:
+`R` and the `network` package allow us to also go the other way, e.g. creating an edgelist from a `network` object. We can do this by converting the network to a data frame using `as.data.frame(...)`:
 
 ```{r}
-el <- as.edgelist(net1, output="tibble") # `tibble` is how data frames are called in the tidyverse
+el <- as.data.frame(net1)
 el
 ```
 
-The same also goes for adjacency matrices:
+Here, the `.tail` column holds the sender for each edge and `.head` the receiver.
+
+We can similarly also convert to an adjacency matrix:
 
 ```{r}
 adj <- as.matrix(net1)
 adj
 ```
 
-A couple of sessions ago, we saw how to *index* into a vector using square brackets (e.g. `myvec[1]`). We can do the same for our adjacency matrix, using two indices (the first for the row and the second for the column):
-
-```{r}
-adj[1,2]
-```
-
-This tells us that there is an edge in our network from node 1 to node 2.
-
-Indexing into the network is even directly supported for `network` objects, using the same indexing syntax:
-
-```{r}
-net1[1,2]
-```
-
 ## Exercises
 
-1.  Load the adjacency matrix contained in the file `data/lazega_advice.csv` into a data frame.
+1.  Load the adjacency matrix contained in the file `data/lazega_advice.csv` into `R`.
 
     ```{r}
     # Write your code here...

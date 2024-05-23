@@ -1,9 +1,5 @@
 ---
-title: "network-basics"
-author: "Jakob Hoffmann"
-format: 
-  html:
-    embed-resources: true
+title: "Representing networks in R"
 editor: visual
 ---
 
@@ -11,10 +7,15 @@ editor: visual
 
 Networks can be categorized in various ways depending on their characteristics. We will cover three types of networks here: *directed* and *undirected* networks, *weighted* and *unweighted* networks, and *unipartite* and *bipartite* networks.
 
-We start by loading the necessary packages and reading an edgelist from a `.csv` file into a data frame:
+As usual, we start by loading the necessary packages into our session:
 
 ```{r}
+#| warning: false
+#| error: false
+#| output: false
+
 library(network)
+library(sna)
 library(readr)
 ```
 
@@ -33,13 +34,11 @@ edgelist <- data.frame(
 )
 ```
 
-We can construct directed and undirected variants in the following way:
+We can construct a directed network in the following way:
 
 ```{r}
 
 directed <- network(edgelist, directed = TRUE)
-
-undirected <- network(edgelist, directed = FALSE)
 ```
 
 ### Symmetrization
@@ -58,6 +57,20 @@ Since this function returns a symmetrized adjacency matrix, we also need to reco
 
 ```{r}
 net_sym <- network(adj_sym, directed=FALSE)
+```
+
+### Ploting directed and undirected networks
+
+Directed edges are usually represented by arrows in a network plot. If we pass a directed network to `gplot(...)`, this is the default (because the default value of the `gmode` argument is `digraph`):
+
+```{r}
+gplot(directed, label = 1:4)
+```
+
+If we want to plot an undirected network, we include `gmode = "digraph"` in the call to `gplot`:
+
+```{r}
+gplot(net_sym, gmode = "graph", label = 1:4)
 ```
 
 ## Weighted and unweighted networks
@@ -102,6 +115,14 @@ In the dichotomized matrix, all cells with a value of $0.3$ or more are set to $
 net_dicho <- network(adj_dicho)
 ```
 
+### Plotting weighted networks
+
+If we want to include weights in our plot, we can scale the width of the edges in the plot according to their weight by setting the argument `edge.lwd` to the weighted adjacency matrix (possibly multiplied by a scaling factor or transformed by some other function):
+
+```{r}
+gplot(net_weighted, edge.lwd = 8 * adj_weighted)
+```
+
 ## Unipartite vs. bipartite networks
 
 Another commonly encountered type of network are bipartite (or bimodal) networks. In a bipartite network, there are two different kinds of nodes and only nodes of different kinds can be connected through an edge.
@@ -125,12 +146,6 @@ net_bipartite
 ```
 
 The `bipartite = 2` in the printed summary indicates the number of nodes in the first partition.
-
-We can use the bipartite nature of this network for plotting by passing the `gmode = "twomode"` flag to the `gplot(...)` function:
-
-```{r}
-gplot(net_bipartite, gmode = "twomode", usearrows = FALSE)
-```
 
 ### Projecting bipartite networks
 
@@ -160,6 +175,16 @@ t(inc) %*% inc
 
 We can then proceed to create networks from these, as for regular weighted adjacency matrices.
 
+### Plotting bipartite networks
+
+We can use the bipartite nature of this network for plotting by passing the `gmode = "twomode"` flag to the `gplot(...)` function. This will show the two sets of nodes in different colors and with different symbols:
+
+```{r}
+gplot(net_bipartite, gmode = "twomode", usearrows = FALSE)
+```
+
+### 
+
 ## Exercises
 
 1.  Load the advice network in the file `data/lazega_advice.csv` into a directed network object.
@@ -169,6 +194,26 @@ We can then proceed to create networks from these, as for regular weighted adjac
     ```
 
 2.  Symmetrize the network using the weak rule.
+
+    ```{r}
+    # Write your code here...
+    ```
+
+3.  Symmetrize the network using the strong rule.
+
+    ```{r}
+    # Write your code here...
+    ```
+
+4.  Plot the symmetrized network next to the original with the correct arguments for an undirected network.
+
+    ```{r}
+    par(mfrow=c(1,2)) # DON'T CHANGE THIS
+
+    # Write your plotting functions here...
+    ```
+
+5.  Compare the two symmetrized variants visually and in terms of their basic properties. What do you observe?
 
     ```{r}
     # Write your code here...

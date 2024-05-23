@@ -36,8 +36,10 @@ website:
               
       - section: "Networks in `R`"
         contents:
-          - href: 05-networks.qmd
-            text: "Network basics"
+          - href: 05-network-construction.qmd
+            text: "Network represenations"
+          - href: 06-network-types.qmd
+            text: "Network types"
 
 format:
   html:

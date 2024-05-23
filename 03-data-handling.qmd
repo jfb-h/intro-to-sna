@@ -11,7 +11,7 @@ Data wrangling comprises, e.g., filtering out bad data, selecting a subset of av
 
 This tutorial only gives a glimpse at the possibilities of data wrangling in `R`. For a much more comprehensive introduction see the great and free [R for Data Science](https://r4ds.hadley.nz/) online book.
 
-For the following tutorial, we will again make use of the `gapminder` dataset:
+In the following, we will again make use of the `gapminder` dataset as well as the `tidyverse`:
 
 ```{r}
 library(gapminder)
