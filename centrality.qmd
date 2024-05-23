@@ -1,99 +1,180 @@
+---
+title: "Centrality measures in R"
+editor: visual
+---
+
+# Centrality measures
+
+Centrality measures = measure the centrality of the location of an actor in the network.
+
+## Degree Centrality
+
+The degree centrality CD of a node n i is the sum of the edges xij ending in this node.
+
+Degree = The degree centrality of a node is the sum of its direct relations in the network.
+
+In the following, we will make use of the `statnet` package and the `florentine` dataset to showcase different Centrality measures.
+
+```{r}
+#| warning: false
+#| error: false
+#| output: false
 
 library(statnet)
+```
 
-# DEGREE CENTRALITY ##
+The `florentine` data set contains the marriage and business ties among Renaissance Florentine families. The data is originally from Padgett (1994) via `UCINET` and stored as a [`network`](http://127.0.0.1:46711/help/library/network/help/network) object.
 
+```{r}
+
+?florentine
 data(florentine)
+deg <- degree(flomarriage, gmode = "graph") 
 
-deg <- degree(flomarriage, gmode = "graph")
 flomarriage %v% "vertex.names"
 
-hist(deg, xlab = "degree") 
+hist(deg, xlab = "degree")
 
 deg_scaled <- degree(flomarriage, gmode = "graph", rescale = T)
 
-gplot(flomarriage, gmode = "graph", vertex.cex = 0.3 + 8*deg_scaled,
-      label = flomarriage %v% "vertex.names", label.pos = 5)
+gplot(flomarriage, gmode = "graph", vertex.cex = 0.3 + 8*deg_scaled, label = flomarriage %v% "vertex.names", label.pos = 5)
+```
 
+## Degree for directed Networks
 
-# DEGREE FOR DIRECTED NETWORKS ##
+-   Actor Degree = with directed graphs, a distinction is made between incoming and outgoing contacts.
 
-net <- network.initialize(3)
-add.edges(net, c(1,1,2), c(2,3,3))
+-   Indegree = Incoming contacts indicate the prominence of a node and is a simple indicator of prestige
+
+-   Tom is a sink because he only receives edges but does not send any.
+
+-   Outdegree = Outgoing contacts indicate the influence of a node on others. It has much to distribute and reaches many other nodes.
+
+-   Anna is a source because she only sends edges and does not receive any.
+
+```{r}
+net <- network.initialize(3) 
+add.edges(net, c(1,1,2), c(2,3,3)) 
 gplot(net, displaylabels = T)
 
-degree(net, gmode = "digraph", cmode = "freeman")
-degree(net, gmode = "digraph", cmode = "indegree")
+degree(net, gmode = "digraph", cmode = "freeman") 
+degree(net, gmode = "digraph", cmode = "indegree") 
 degree(net, gmode = "digraph", cmode = "outdegree")
+```
 
+## Closeness Centrality
 
-# CLOSENESS CENTRALITY ##
+The concept of closeness describes the relative proximity of one actor to all the others. In contrast to degree, indirect contacts are also included in the calculation.
 
+Farness = Sum of all geodesic distances from ni to all other n j.
+
+Closeness = Cc of a node ni is the inverse of farness, the quotient 1/farness
+
+```{r}
 closeness(flomarriage, gmode = "graph", cmode = "undirected")
 
+```
 
-# REMOVE ISOLATES ##
+### Remove Isolates
 
-vnoisol <- c(1:network.size(flomarriage))[-isolates(flomarriage)]
+Nodes with degree zero
+
+```{r}
+vnoisol <- c(1:network.size(flomarriage))[-isolates(flomarriage)] 
 flomarriage_noisol <- flomarriage %s% vnoisol
- 
-clos_noisol <- closeness(flomarriage_noisol, cmode = "undirected") 
 
+clos_noisol <- closeness(flomarriage_noisol, cmode = "undirected")
 
-# CLOSENESS: SUM-OF-INVERSE DISTANCES ## 
+```
 
+## Closeness: Sum-of-Inverse Distances
+
+```{r}
 clos_suminv <- closeness(flomarriage, gmode = "graph", cmode = "suminvundir") 
 clos_suminv[12]
 
 cor(clos_noisol, clos_suminv[-12])
+```
 
+## Betweenness Centrality 
 
-# BETWEENNESS CENTRALITY ##
+Betweenness measures the network flow that a given node controls by being an intermediary on the shortest paths between other pairs of nodes.
 
-bet <- betweenness(flomarriage, gmode = "graph")
-bet
+-   Assumption: indivisible traffic to a target that always chooses the shortest path and chooses randomly in case of alternative shortest paths.
+
+-   Betweenness is good for capturing frequency of traffic based on transfers.
+
+```{r}
+bet <- betweenness(flomarriage, gmode = "graph") 
+bet 
 hist(bet)
 
 
-# NORMALIZE BY THEORETICAL MAXIMUM VALUE (STAR GRAPH)
+```
 
-N <- network.size(flomarriage)
+## Normalize by Theoretical Maximum Value (Star Graph)
+
+```{r}
+N <- network.size(flomarriage) 
 bet_norm <- bet / ((N-1)*(N-2)/2)
 
 
-# EIGENVECTOR CENTRALITY ##
+```
 
+## Eigenvector Centrality
+
+The Eigenvector centrality of each node is determined by the centrality of the nodes it is connected to. A high eigenvector score means that a node is connected to many nodes who themselves have high scorers.
+
+```{r}
 eig <- evcent(flomarriage)
+```
 
+# Graph-Level Centralization
 
-# GRAPH-LEVEL CENTRALIZATION ##
+The centralization of a network is an expression of the concentration of edges on a few or even only one actor.
 
-centralization(flomarriage, degree, mode = "graph")
+Measuring principle: Measure of the observed uneven distribution of the edges in relation to the maximum possible concentration of the edges for a given number of nodes.
+
+nDegree=number of contacts divided by the maximum possible number of contacts of a node
+
+Betweenness centralization of the network measures the overall tendency of the network to be connected through a single intermediary.
+
+```{r}
+centralization(flomarriage, degree, mode = "graph") 
 centralization(flomarriage, betweenness, mode = "graph")
+```
 
+# Compare Measures
 
-# COMPARE MEASURES ##
+```{r}
 
-source("src/helpers/pairsplot.R")
+source("helpers/pairsplot.R")
 
-pairs(cbind(deg, clos_suminv, bet, eig), 
-      upper.panel = panel.cor, diag.panel = panel.hist)
-
+pairs(cbind(deg, clos_suminv, bet, eig), upper.panel = panel.cor, diag.panel = panel.hist)
 
 par(mfrow = c(2,2), mar = c(0,0,1,0))
 
 net_layout <- network.layout.fruchtermanreingold(flomarriage, layout.par = NULL)
 
-gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + .3*deg,
-      label=flomarriage %v% "vertex.names", label.pos=5, main="Degree", pad=1) 
+gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + .3*deg, label=flomarriage %v% "vertex.names", label.pos=5, main="Degree", pad=1)
 
-gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + 2*clos_suminv,
-      label=flomarriage %v% "vertex.names", label.pos=5, main="Closeness", pad=1) 
+gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + 2*clos_suminv, label=flomarriage %v% "vertex.names", label.pos=5, main="Closeness", pad=1)
 
-gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + 5*bet_norm,
-      label=flomarriage %v% "vertex.names", label.pos=5, main="Betweenness", pad=1) 
+gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + 5*bet_norm, label=flomarriage %v% "vertex.names", label.pos=5, main="Betweenness", pad=1)
 
-gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + 3*eig,
-      label=flomarriage %v% "vertex.names", label.pos=5, main="Eigenvector", pad=1) 
+gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + 3*eig, label=flomarriage %v% "vertex.names", label.pos=5, main="Eigenvector", pad=1)
+```
 
+## Exercises
 
+Visualize the betweenness centrality of the flobusiness network.
+
+```{r}
+
+```
+
+Create a comparative representation with the helper function and the learned centralities of the flobusiness network.
+
+```{r}
+
+```
