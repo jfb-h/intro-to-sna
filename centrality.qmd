@@ -1,0 +1,99 @@
+
+library(statnet)
+
+# DEGREE CENTRALITY ##
+
+data(florentine)
+
+deg <- degree(flomarriage, gmode = "graph")
+flomarriage %v% "vertex.names"
+
+hist(deg, xlab = "degree") 
+
+deg_scaled <- degree(flomarriage, gmode = "graph", rescale = T)
+
+gplot(flomarriage, gmode = "graph", vertex.cex = 0.3 + 8*deg_scaled,
+      label = flomarriage %v% "vertex.names", label.pos = 5)
+
+
+# DEGREE FOR DIRECTED NETWORKS ##
+
+net <- network.initialize(3)
+add.edges(net, c(1,1,2), c(2,3,3))
+gplot(net, displaylabels = T)
+
+degree(net, gmode = "digraph", cmode = "freeman")
+degree(net, gmode = "digraph", cmode = "indegree")
+degree(net, gmode = "digraph", cmode = "outdegree")
+
+
+# CLOSENESS CENTRALITY ##
+
+closeness(flomarriage, gmode = "graph", cmode = "undirected")
+
+
+# REMOVE ISOLATES ##
+
+vnoisol <- c(1:network.size(flomarriage))[-isolates(flomarriage)]
+flomarriage_noisol <- flomarriage %s% vnoisol
+ 
+clos_noisol <- closeness(flomarriage_noisol, cmode = "undirected") 
+
+
+# CLOSENESS: SUM-OF-INVERSE DISTANCES ## 
+
+clos_suminv <- closeness(flomarriage, gmode = "graph", cmode = "suminvundir") 
+clos_suminv[12]
+
+cor(clos_noisol, clos_suminv[-12])
+
+
+# BETWEENNESS CENTRALITY ##
+
+bet <- betweenness(flomarriage, gmode = "graph")
+bet
+hist(bet)
+
+
+# NORMALIZE BY THEORETICAL MAXIMUM VALUE (STAR GRAPH)
+
+N <- network.size(flomarriage)
+bet_norm <- bet / ((N-1)*(N-2)/2)
+
+
+# EIGENVECTOR CENTRALITY ##
+
+eig <- evcent(flomarriage)
+
+
+# GRAPH-LEVEL CENTRALIZATION ##
+
+centralization(flomarriage, degree, mode = "graph")
+centralization(flomarriage, betweenness, mode = "graph")
+
+
+# COMPARE MEASURES ##
+
+source("src/helpers/pairsplot.R")
+
+pairs(cbind(deg, clos_suminv, bet, eig), 
+      upper.panel = panel.cor, diag.panel = panel.hist)
+
+
+par(mfrow = c(2,2), mar = c(0,0,1,0))
+
+net_layout <- network.layout.fruchtermanreingold(flomarriage, layout.par = NULL)
+
+gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + .3*deg,
+      label=flomarriage %v% "vertex.names", label.pos=5, main="Degree", pad=1) 
+
+gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + 2*clos_suminv,
+      label=flomarriage %v% "vertex.names", label.pos=5, main="Closeness", pad=1) 
+
+gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + 5*bet_norm,
+      label=flomarriage %v% "vertex.names", label.pos=5, main="Betweenness", pad=1) 
+
+gplot(flomarriage, coord=net_layout, gmode="graph", vertex.cex=.3 + 3*eig,
+      label=flomarriage %v% "vertex.names", label.pos=5, main="Eigenvector", pad=1) 
+
+
