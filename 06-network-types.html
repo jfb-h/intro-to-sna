@@ -64,6 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./07-centrality.html" rel="next">
 <link href="./05-network-construction.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -248,6 +249,12 @@ window.Quarto = {
  <span class="menu-text">Network types</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-centrality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Centrality measures</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -378,11 +385,11 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>adj_weighted <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">16</span>), <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>adj_weighted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>           [,1]       [,2]       [,3]       [,4]
-[1,]  0.4916556  0.7430118  0.3829974 -0.9293158
-[2,] -0.4842356  0.5528987  1.2663910 -0.4169155
-[3,] -0.7392497 -0.5851660  1.8773884 -0.6609479
-[4,]  0.2556204  0.8740241 -0.3391600 -0.3104490</code></pre>
+<pre><code>           [,1]        [,2]       [,3]        [,4]
+[1,]  0.6674972  0.25191906  0.5367836 -2.25764163
+[2,]  1.2425868 -0.40725892 -1.1829299 -0.06242534
+[3,] -0.7584539  0.05327441  1.0051643  0.74077534
+[4,]  0.2877202 -1.12545898 -2.3557705 -0.30911381</code></pre>
 </div>
 </div>
 <p>By default, the <code>network(...)</code> function ignores edge values/weights. We here accordingly specify <code>ignore.eval = FALSE</code> and specify a name for our weights by setting <code>names.eval = "name"</code>:</p>
@@ -420,10 +427,10 @@ window.Quarto = {
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>adj_dicho</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4]
-[1,]    1    1    1    0
-[2,]    0    1    1    0
-[3,]    0    0    1    0
-[4,]    0    1    0    0</code></pre>
+[1,]    1    0    1    0
+[2,]    1    0    0    0
+[3,]    0    0    1    1
+[4,]    0    0    0    0</code></pre>
 </div>
 </div>
 <p>In the dichotomized matrix, all cells with a value of <span class="math inline">\(0.3\)</span> or more are set to <span class="math inline">\(1\)</span> while all cells below the threshold are set to a <span class="math inline">\(0\)</span>. We can then pass the dichotomized adjacency matrix to the network constructor again:</p>
@@ -995,6 +1002,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./07-centrality.html" class="pagination-link" aria-label="Centrality measures">
+        <span class="nav-page-text">Centrality measures</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
