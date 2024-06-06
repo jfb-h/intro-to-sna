@@ -40,6 +40,8 @@ website:
             text: "Network represenations"
           - href: 06-network-types.qmd
             text: "Network types"
+          - href: 07-centrality.qmd
+            text: "Centrality measures"
 
 format:
   html:

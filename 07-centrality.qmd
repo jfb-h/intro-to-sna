@@ -1,0 +1,416 @@
+---
+title: "Centrality Measures in R"
+editor: visual
+---
+
+# Marriages among Florentine Families
+
+Centrality measures assess the importance of an actor's position within a network. We will explore the most important ones: degree centrality, closeness centrality, betweenness centrality, and eigenvector centrality. While other centrality measures exist, they are often related to one of these four.
+
+We again start by loading the `statnet` suite (which contains the `network` and `sna` packages): 
+
+```{r}
+#| warning: false
+#| error: false
+#| output: false
+
+library(statnet)
+```
+
+We will demonstrate the various centrality mesures using the `florentine` datasets contained in the `network` package, which contain the marriage and business ties among Renaissance Florentine families. The dataset was originally prepared by Padgett (1994) in his analysis of the Medici's rise to power. Since the data is already prepared as a set of `network` objects, we can skip conversion this time.
+
+We make the datasets available with a call to `data(...)`:
+
+```{r}
+data(florentine)
+```
+
+Before we start measuring centrality, let's have a brief look at the marriage network. First, we get the names of the families which are stored as a vertex attribute in the `flomarriage` network object. We can extract a vertex attribute using the `%v%` pipe:
+
+```{r}
+family_names <- flomarriage %v% "vertex.names"
+```
+
+Now lets plot the network, labeling the nodes with the extracted names:
+
+```{r}
+gplot(flomarriage,
+      gmode = "graph",
+      label = family_names,
+      vertex.col = "grey20",
+      edge.col = "grey70")
+```
+
+
+## Degree Centrality
+
+Degree centrality is just the number of edges connected to a node, which we can compute using the `degree(...)` function from the `sna` package. Calling the function on a network returns a vector with the centrality score for each node in the network:
+
+```{r}
+deg = degree(flomarriage, gmode="graph")
+deg
+```
+
+We specify the `gmode="graph"` argument because the marriage network is undirected.
+
+If we want to compare centralities visually, we can scale the node size in a network using the `vertex.cex` (cex = character expansion factor) argument:
+
+```{r}
+gplot(flomarriage,
+      gmode = "graph",
+      label = family_names,
+      vertex.cex = sqrt(deg),
+      vertex.col = "grey20",
+      edge.col = "grey70")
+```
+
+Instead of using degrees directly, we use the square root of degrees because otherwise some nodes will be too large. Here, we can see that the Medici are the most central family in the network in that they have the most marriage ties to other Florentine families.
+
+In case we are more interested in the general distribution of centrality in the network, we can plot a histogram of degrees:
+
+```{r}
+hist(deg, xlab = "Degree centrality", main = "Degree distribution")
+```
+
+This is often more useful for learning something about the structure of large networks, where the network graph quickly becomes unreadable.
+
+### Degree for Directed Networks
+
+In directed graphs, we distinguish between indegree and outdegree, i.e. the number of incoming and outgoing edges, respectively.
+
+To compute these, we first need to specify `gmode="digraph"` in the `degree()` function call. We then have the choice between `cmode="indegree"`, `cmode="outdegree"`, and `cmode="freeman"`, where the `freeman` option is just the sum of in- and outdegrees.
+
+## Closeness Centrality
+
+Closeness centrality measures how close an actor is to all other actors in the network, including indirect contacts. It is the inverse of a node's farness, where farness is the sum of the shortest path distances to all other nodes.
+
+There is a function for calculating closeness centrality which similarly to the `degree` function requires specifying the network mode via `gmode`. In a directed network, edge directions can additionally be ignored by specifying `cmode="undirected"`.
+
+However, if we call the `closeness(...)` function on the marriage network, we get an unexpected result:
+
+```{r}
+closeness(flomarriage, gmode = "graph")
+```
+
+Because the network contains an isolate node and paths to isolated nodes are specified to have infinite length, our farness is infinite. Accordingly, closeness is 0 for all nodes because $1/\infty = 0$.
+
+### Remove Isolates
+
+One way to tackle the above is to remove isolated nodes from the network, which can be useful more generally. To do so, we first identify all isolated nodes in the network using the `isolates(...)` function:
+
+```{r}
+isol <- isolates(flomarriage)
+isol
+```
+
+This tells us that the 12th node in the network is isolated. To get all nodes that are *not* isolated, we create a list of all node indices and remove the isolated ones:
+
+```{r}
+noisol <- seq(network.size(flomarriage))[-isol]
+noisol
+```
+
+With this list we can now use the `%s%` operator to generate a subset of the network containing only the nodes that are not isolated:
+
+```{r}
+flomarriage_noisol <- flomarriage %s% noisol
+```
+
+Calculating closeness now yields meaningful results.
+
+```{r}
+closeness(flomarriage_noisol, cmode = "undirected")
+```
+
+### Sum-of-Inverse Distances Closeness
+
+Another approach to handle infinite geodesic distances in closeness calculations is using the sum-of-inverse-distances method. this approach reformulates closeness as the sum of inverse distances instead of the inverse of the sum of distances, which means that just the term involving the isolate node will be zero. 
+
+We can calculate closeness this way by specifying `cmode = "suminvundir"`:
+
+```{r}
+clos <- closeness(flomarriage,
+                  gmode = "graph",
+                  cmode = "suminvundir") 
+clos
+```
+
+We can see that this yields similar results compared to when the isolate node is dropped and just sets the closeness of node 12 to zero.
+
+## Betweenness Centrality
+
+Betweenness centrality measures the extent to which a node lies on the shortest paths between all other nodes, effectively controlling network flow where traffic is assumed to always follows the shortest path.
+
+As before, there is a function to compute this, with arguments to control how to treat directed edges:
+
+```{r}
+bet <- betweenness(flomarriage, gmode = "graph") 
+bet 
+```
+
+### Normalize by Theoretical Maximum
+
+Because betweenness scores can get very large quickly, it can make sense to normalize them agains the theoretical maximum value. This maximum is achieved by a star graph (just one noded connected to all others) and can be computed just using the network size $N$:
+
+```{r}
+N <- network.size(flomarriage) 
+norm <- ((N-1)*(N-2)/2)
+bet_norm <- bet / norm
+```
+
+## Eigenvector Centrality
+
+Eigenvector centrality builds on the recursive intuition that a node is influential if its neighbours are influential. It is defined as the principal eigenvector of the adjacency matrix.
+
+We can compute it using the `evcent(...)` function:
+
+```{r}
+eig <- evcent(flomarriage, gmode="graph")
+eig
+```
+
+Eigenvector centralities are only useful for comparisons across nodes as the individual scores don't have a useful interpretation.
+
+## Comparing Centrality Measures
+
+While the above centrality measures build on very different theoretical considerations or intuitions, the are often strongly correlated for many real-world cases.
+
+We can inspect this correlation using a `pairs` plot:
+
+```{r}
+source("helpers/pairsplot.R") # load helper script to improve the plot
+
+measures <- cbind(deg, clos, bet, eig)
+
+pairs(measures,
+      upper.panel = panel.cor,
+      diag.panel = panel.hist)
+```
+
+Indeed, we see that most of the measures are quite strongly correlated.
+
+We can also plot the network multiple times and using the different measures to scale nodes. to make visual comparison easier, we precompute the layout to fix node positions across the plots, using the Fruchterman-Reingold algorithm:
+
+```{r}
+layout <- network.layout.fruchtermanreingold(flomarriage,
+                                             layout.par = NULL)
+```
+
+To plot multiple plots into the same figure, we specify `par(mfrow = c(2,2))` before calling our plotting functions, which creates a $2 \times 2$ plot grid:
+
+```{r}
+
+par(mfrow = c(2,2), mar=c(0,0,3,0))
+
+gplot(flomarriage,
+      coord=layout,
+      gmode="graph",
+      vertex.cex=.3 + .3*deg,
+      main="Degree")
+
+gplot(flomarriage,
+      coord=layout,
+      gmode="graph",
+      vertex.cex=.3 + 2*clos,
+      main="Closeness")
+
+gplot(flomarriage,
+      coord=layout,
+      gmode="graph",
+      vertex.cex=.3 + 5*bet_norm,
+      main="Betweenness")
+
+gplot(flomarriage,
+      coord=layout,
+      gmode="graph",
+      vertex.cex=.3 + 5*eig,
+      main="Eigenvector")
+
+```
+
+As we can see, the Medici are the most central of the Florentine families according to all four centrality measures.
+
+# Graph-Level Centralization
+
+While centrality measures are by default used to distinguish nodes by their network position, we can also use them to compute a graph-level *centralization* score. Centralization measures the degree of concentration of centrality in the network, i.e. te degree to which the network is focused on a single node.
+
+We can compute centralization for a range of centrality measures with the `centralization(...)` function, to which we pass the corresponding centrality function:
+
+```{r}
+centralization(flomarriage, degree, mode = "graph") 
+centralization(flomarriage, betweenness, mode = "graph")
+centralization(flomarriage, evcent, mode = "graph")
+```
+
+By default, values are normalized against the theoretical maximum centralization and accordingly a value of 1 would represent maximal centralization (obtained in a star graph) and a value of 0 represents uniform centrality (obtained in a circle graph).
+
+## Exercises
+
+1. Load the lazega advice network into a directed `network` object.
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+adjmat <- read.table("data/lazega_advice.csv", 
+                     sep =";", 
+                     header = TRUE, 
+                     row.names = 1, 
+                     check.names = FALSE)
+
+adjmat <- as.matrix(adjmat)
+
+net_advice <- network(adjmat)
+```
+
+2. Pick an appropriate centrality measure to capture the flow of knowledge across the network. Which measure do you choose?
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+# Betweenness centrality might be a reasonable fit, although it is questionable that knowledge should only flow across shortest paths. A better alternative might be flow betweeness.
+
+```
+
+3. Compute the corresponding node level centralities using an appropriate specification.
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+bet <- betweenness(net_advice) 
+```
+
+4. Find the most and least central nodes in the network.
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+which.min(bet)
+which.max(bet) 
+```
+
+5. Visualize the network using the centrality scores.
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+dev.off()
+
+gplot(net_advice,
+      gmode = "graph",
+      vertex.cex = 1 + 0.1*sqrt(bet),
+      vertex.col = "grey20",
+      edge.col = "grey70")
+
+```
+
+6. Visualize the distribution of the centrality scores using a histogram. What do you learn about the network?
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+hist(bet,
+     main="Distribution of betweenness scores",
+     xlab="Betweenness centrality")
+```
+
+7. Compute the centralization of the network using the chosen centrality measure. What does it tell you?
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+centralization(net_advice, betweenness)
+```
+
+8. Also load the friendship network into your `R` session. 
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+adjmat <- read.table("data/lazega_friendship.csv", 
+                     sep =";", 
+                     header = TRUE, 
+                     row.names = 1, 
+                     check.names = FALSE)
+
+adjmat <- as.matrix(adjmat)
+
+net_friendship <- network(adjmat)
+```
+
+9. Compute centralities for the friendship network using the same measure as before.
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+bet_friendship <- betweenness(net_friendship)
+```
+
+10. Plot the two networks side-by-side, using the respective centrality scores to scale node size. What do you observe?
+   
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+par(mfrow = c(1,2), mar=c(0,0,3,0))
+
+layout <- network.layout.fruchtermanreingold(net_advice,
+                                             layout.par = NULL)
+
+gplot(net_advice,
+      coord=layout,
+      gmode="graph",
+      vertex.col = "grey20",
+      vertex.cex = 1 + 0.1*sqrt(bet),
+      edge.col = "grey70",
+      main="Advice ties")
+
+gplot(net_friendship,
+      coord=layout,
+      gmode="graph",
+      vertex.col = "grey20",
+      vertex.cex = 1 + 0.1*sqrt(bet_friendship),
+      edge.col = "grey70",
+      main="Friendship ties")
+```
+
+11. Plot a scatter plot of the advice and friendship betweenness scores.
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+dev.off()
+
+plot(bet, bet_friendship, xlab="Advice", ylab="Friendship")
+```
+
+12. Compute the centralization for the friendship network and compare the resulting score to the advice network.
+
+```{r}
+#| code-fold: true
+#| code-summary: Solution
+#| eval: false
+
+centralization(net_advice, betweenness)
+centralization(net_friendship, betweenness)
+```
