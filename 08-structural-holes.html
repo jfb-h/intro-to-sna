@@ -503,7 +503,7 @@ Tornabuoni      1          0       0         0       1        0          0</code
 </ol>
 <div class="cell">
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>adjmat <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"data/lazega_advice.csv"</span>, </span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sep =</span><span class="st">";"</span>, </span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">header =</span> <span class="cn">TRUE</span>, </span>
@@ -520,7 +520,7 @@ Tornabuoni      1          0       0         0       1        0          0</code
 </ol>
 <div class="cell">
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>net_sym <span class="ot">&lt;-</span> <span class="fu">network</span>(<span class="fu">symmetrize</span>(net_advice), <span class="at">directed=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -529,7 +529,7 @@ Tornabuoni      1          0       0         0       1        0          0</code
 </ol>
 <div class="cell">
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>e1 <span class="ot">&lt;-</span> <span class="fu">network</span>(<span class="fu">ego.extract</span>(net_sym, <span class="at">ego=</span><span class="dv">33</span>)[[<span class="st">"33"</span>]], <span class="at">directed=</span><span class="cn">FALSE</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>e2 <span class="ot">&lt;-</span> <span class="fu">network</span>(<span class="fu">ego.extract</span>(net_sym, <span class="at">ego=</span><span class="dv">40</span>)[[<span class="st">"40"</span>]], <span class="at">directed=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -539,7 +539,7 @@ Tornabuoni      1          0       0         0       1        0          0</code
 </ol>
 <div class="cell">
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">3</span>,<span class="dv">0</span>))</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(e1,</span>
@@ -567,42 +567,42 @@ Tornabuoni      1          0       0         0       1        0          0</code
 </ol>
 <div class="cell">
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(e1)[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 44</code></pre>
 </div>
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(e2)[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 52</code></pre>
 </div>
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">egonet_effsize</span>(e1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 13.63636</code></pre>
 </div>
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">egonet_effsize</span>(e2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 11.61538</code></pre>
 </div>
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">egonet_efficiency</span>(e1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6198347</code></pre>
 </div>
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">egonet_efficiency</span>(e2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -614,7 +614,7 @@ Tornabuoni      1          0       0         0       1        0          0</code
 </ol>
 <div class="cell">
 <details class="code-fold">
-<summary>Apply to network</summary>
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>degree <span class="ot">&lt;-</span> <span class="fu">degree</span>(net_sym)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>constraint <span class="ot">&lt;-</span> <span class="fu">apply_egonet</span>(net_sym, egonet_constraint)</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>effsize <span class="ot">&lt;-</span> <span class="fu">apply_egonet</span>(net_sym, egonet_effsize)</span>
