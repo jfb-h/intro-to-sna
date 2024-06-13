@@ -19,7 +19,7 @@ The structural hole measures are not included in either `statnet` or `igraph`, b
 
 # Extract ego-networks
 
-Burt's structural hole measures operate on ego-networks, i.e., they only take the direct neighbourhood of a node into account. Since we have a full network here, the first thing we need is a way to extract a specified node's ego-network. Helpfully, `statnet` privides the function `ego.extract(...)`, which does exactly that:
+Burt's structural hole measures operate on ego-networks, i.e., they only take the direct neighborhood of a node into account. Since we have a full network here, the first thing we need is a way to extract a specified node's ego-network. Helpfully, `statnet` provides the function `ego.extract(...)`, which does exactly that:
 
 ```{r}
 ego_medici <- ego.extract(flomarriage, ego = 9)
