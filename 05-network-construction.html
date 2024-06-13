@@ -172,13 +172,13 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
  <span class="menu-text">Getting started</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./00-index.html" class="sidebar-item-text sidebar-link">
@@ -195,13 +195,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text"><code>R</code> basics</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text"><code>R</code> programming basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-basics.html" class="sidebar-item-text sidebar-link">
@@ -249,13 +249,44 @@ window.Quarto = {
  <span class="menu-text">Network types</span></a>
   </div>
 </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Node-level indicators</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-centrality.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Centrality measures</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-structural-holes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Structural holes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-actor-attributes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Node-level indices and actor attributes</span></a>
+  </div>
+</li>
       </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Group structure</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Modeling structure</span></span>
   </li>
     </ul>
     </div>
@@ -267,9 +298,7 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#network-representations" id="toc-network-representations" class="nav-link active" data-scroll-target="#network-representations">Network representations</a>
-  <ul class="collapse">
-  <li><a href="#the-edgelist" id="toc-the-edgelist" class="nav-link" data-scroll-target="#the-edgelist">The edgelist</a></li>
+  <li><a href="#the-edgelist" id="toc-the-edgelist" class="nav-link active" data-scroll-target="#the-edgelist">The edgelist</a></li>
   <li><a href="#the-adjacency-matrix" id="toc-the-adjacency-matrix" class="nav-link" data-scroll-target="#the-adjacency-matrix">The adjacency matrix</a>
   <ul class="collapse">
   <li><a href="#indexing-into-an-adjacency-matrix" id="toc-indexing-into-an-adjacency-matrix" class="nav-link" data-scroll-target="#indexing-into-an-adjacency-matrix">Indexing into an adjacency matrix</a></li>
@@ -277,7 +306,6 @@ window.Quarto = {
   </ul></li>
   <li><a href="#there-and-back-again" id="toc-there-and-back-again" class="nav-link" data-scroll-target="#there-and-back-again">There and back again</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -303,8 +331,6 @@ window.Quarto = {
 </header>
 
 
-<section id="network-representations" class="level1">
-<h1>Network representations</h1>
 <p>Networks can be represented in various formats, each offering its own advantages: Edgelists, for example, are good for storing and passing around networks, while adjacency lists or adjacency matrices are often preferable for computation.</p>
 <p>Software packages for network analysis, such as <code>statnet</code> or <code>igraph</code>, usually hide the underlying data structure used for computation as an implementation detail while allowing import and export from/to a wide range of formats.</p>
 <p>In the following, we will make use of the <code>network</code> and <code>sna</code> <code>R</code> packages to explore conversion from and to a range of network representations:</p>
@@ -530,7 +556,6 @@ No edge attributes</code></pre>
 </ol>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

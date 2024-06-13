@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/09-actor-attributes.html</loc>
+    <lastmod>2024-06-12T08:39:00.745Z</lastmod>
+  </url>
+  <url>
     <loc>https://jfb-h.github.io/intro-to-sna/07-centrality.html</loc>
-    <lastmod>2024-06-05T12:25:47.443Z</lastmod>
+    <lastmod>2024-06-12T10:05:20.179Z</lastmod>
   </url>
   <url>
     <loc>https://jfb-h.github.io/intro-to-sna/05-network-construction.html</loc>
-    <lastmod>2024-05-16T07:10:42.726Z</lastmod>
+    <lastmod>2024-06-12T08:44:08.729Z</lastmod>
   </url>
   <url>
     <loc>https://jfb-h.github.io/intro-to-sna/03-data-handling.html</loc>
@@ -34,6 +38,10 @@
   </url>
   <url>
     <loc>https://jfb-h.github.io/intro-to-sna/06-network-types.html</loc>
-    <lastmod>2024-05-16T06:44:49.169Z</lastmod>
+    <lastmod>2024-06-12T08:40:43.215Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/08-structural-holes.html</loc>
+    <lastmod>2024-06-13T07:34:12.887Z</lastmod>
   </url>
 </urlset>

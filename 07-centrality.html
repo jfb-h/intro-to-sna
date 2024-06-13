@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Intro to SNA in R – Centrality Measures in R</title>
+<title>Intro to SNA in R – Measures of Network Centrality</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,6 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./08-structural-holes.html" rel="next">
 <link href="./06-network-types.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -144,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-network-construction.html">Networks in <code>R</code></a></li><li class="breadcrumb-item"><a href="./07-centrality.html">Centrality measures</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-centrality.html">Node-level indicators</a></li><li class="breadcrumb-item"><a href="./07-centrality.html">Centrality measures</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -171,13 +172,13 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
  <span class="menu-text">Getting started</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./00-index.html" class="sidebar-item-text sidebar-link">
@@ -194,13 +195,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text"><code>R</code> basics</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text"><code>R</code> programming basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-basics.html" class="sidebar-item-text sidebar-link">
@@ -229,13 +230,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
  <span class="menu-text">Networks in <code>R</code></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-network-construction.html" class="sidebar-item-text sidebar-link">
@@ -248,13 +249,44 @@ window.Quarto = {
  <span class="menu-text">Network types</span></a>
   </div>
 </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Node-level indicators</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-centrality.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Centrality measures</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-structural-holes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Structural holes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-actor-attributes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Node-level indices and actor attributes</span></a>
+  </div>
+</li>
       </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Group structure</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Modeling structure</span></span>
   </li>
     </ul>
     </div>
@@ -266,8 +298,7 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#centrality-measures" id="toc-centrality-measures" class="nav-link active" data-scroll-target="#centrality-measures">Centrality Measures</a>
-  <ul class="collapse">
+  <li><a href="#marriages-among-florentine-families" id="toc-marriages-among-florentine-families" class="nav-link active" data-scroll-target="#marriages-among-florentine-families">Marriages among Florentine Families</a></li>
   <li><a href="#degree-centrality" id="toc-degree-centrality" class="nav-link" data-scroll-target="#degree-centrality">Degree Centrality</a>
   <ul class="collapse">
   <li><a href="#degree-for-directed-networks" id="toc-degree-for-directed-networks" class="nav-link" data-scroll-target="#degree-for-directed-networks">Degree for Directed Networks</a></li>
@@ -283,7 +314,6 @@ window.Quarto = {
   </ul></li>
   <li><a href="#eigenvector-centrality" id="toc-eigenvector-centrality" class="nav-link" data-scroll-target="#eigenvector-centrality">Eigenvector Centrality</a></li>
   <li><a href="#comparing-centrality-measures" id="toc-comparing-centrality-measures" class="nav-link" data-scroll-target="#comparing-centrality-measures">Comparing Centrality Measures</a></li>
-  </ul></li>
   <li><a href="#graph-level-centralization" id="toc-graph-level-centralization" class="nav-link" data-scroll-target="#graph-level-centralization">Graph-Level Centralization</a>
   <ul class="collapse">
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
@@ -294,9 +324,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-network-construction.html">Networks in <code>R</code></a></li><li class="breadcrumb-item"><a href="./07-centrality.html">Centrality measures</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-centrality.html">Node-level indicators</a></li><li class="breadcrumb-item"><a href="./07-centrality.html">Centrality measures</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Centrality Measures in R</h1>
+<h1 class="title">Measures of Network Centrality</h1>
 </div>
 
 
@@ -313,14 +343,14 @@ window.Quarto = {
 </header>
 
 
-<section id="centrality-measures" class="level1">
-<h1>Centrality Measures</h1>
 <p>Centrality measures assess the importance of an actor’s position within a network. We will explore the most important ones: degree centrality, closeness centrality, betweenness centrality, and eigenvector centrality. While other centrality measures exist, they are often related to one of these four.</p>
 <p>We again start by loading the <code>statnet</code> suite (which contains the <code>network</code> and <code>sna</code> packages):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(statnet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will demonstrate the various centrality mesures using the <code>florentine</code> datasets contained in the <code>network</code> package, which contain the marriage and business ties among Renaissance Florentine families. The dataset was originally prepared by Padgett (1994), which is now a classic. Since the data is already prepared as a set of <code>network</code> objects, we can skip conversion this time.</p>
+<section id="marriages-among-florentine-families" class="level2">
+<h2 class="anchored" data-anchor-id="marriages-among-florentine-families">Marriages among Florentine Families</h2>
+<p>We will demonstrate the various centrality mesures using the <code>florentine</code> datasets contained in the <code>network</code> package, which contain the marriage and business ties among Renaissance Florentine families. The dataset was originally prepared by Padgett (1994) in his analysis of the Medici’s rise to power. Since the data is already prepared as a set of <code>network</code> objects, we can skip conversion this time.</p>
 <p>We make the datasets available with a call to <code>data(...)</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(florentine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -335,7 +365,8 @@ window.Quarto = {
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">gmode =</span> <span class="st">"graph"</span>,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> family_names,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">vertex.col =</span> <span class="st">"grey20"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">edge.col =</span> <span class="st">"grey70"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">edge.col =</span> <span class="st">"grey70"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">pad=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -344,6 +375,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
+</section>
 <section id="degree-centrality" class="level2">
 <h2 class="anchored" data-anchor-id="degree-centrality">Degree Centrality</h2>
 <p>Degree centrality is just the number of edges connected to a node, which we can compute using the <code>degree(...)</code> function from the <code>sna</code> package. Calling the function on a network returns a vector with the centrality score for each node in the network:</p>
@@ -362,7 +394,8 @@ window.Quarto = {
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> family_names,</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">vertex.cex =</span> <span class="fu">sqrt</span>(deg),</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">vertex.col =</span> <span class="st">"grey20"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">edge.col =</span> <span class="st">"grey70"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">edge.col =</span> <span class="st">"grey70"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">pad=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -470,7 +503,7 @@ window.Quarto = {
 <p>Because betweenness scores can get very large quickly, it can make sense to normalize them agains the theoretical maximum value. This maximum is achieved by a star graph (just one noded connected to all others) and can be computed just using the network size <span class="math inline">\(N\)</span>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">network.size</span>(flomarriage) </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>norm <span class="ot">&lt;-</span> ((N<span class="dv">-1</span>)<span class="sc">*</span>(N<span class="dv">-2</span>)<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>norm <span class="ot">&lt;-</span> (N<span class="dv">-1</span>)<span class="sc">*</span>(N<span class="dv">-2</span>)<span class="sc">/</span><span class="dv">2</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>bet_norm <span class="ot">&lt;-</span> bet <span class="sc">/</span> norm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -478,7 +511,7 @@ window.Quarto = {
 <section id="eigenvector-centrality" class="level2">
 <h2 class="anchored" data-anchor-id="eigenvector-centrality">Eigenvector Centrality</h2>
 <p>Eigenvector centrality builds on the recursive intuition that a node is influential if its neighbours are influential. It is defined as the principal eigenvector of the adjacency matrix.</p>
-<p>We can compute it using the <code>evcent(..)</code> function:</p>
+<p>We can compute it using the <code>evcent(...)</code> function:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>eig <span class="ot">&lt;-</span> <span class="fu">evcent</span>(flomarriage, <span class="at">gmode=</span><span class="st">"graph"</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>eig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -553,10 +586,9 @@ window.Quarto = {
 </div>
 <p>As we can see, the Medici are the most central of the Florentine families according to all four centrality measures.</p>
 </section>
-</section>
 <section id="graph-level-centralization" class="level1">
 <h1>Graph-Level Centralization</h1>
-<p>While centrality measures are by default used to distinguish nodes by their network position, we can also use them to compute a graph-level <em>centralization</em> score. Centralization measures the degree of concentration of centrality in the network, i.e.&nbsp;te degree to which the network is focused on a single node.</p>
+<p>While centrality measures are by default used to distinguish nodes by their network position, we can also use them to compute a graph-level <em>centralization</em> score. Centralization measures the degree of concentration of centrality in the network, i.e.&nbsp;the degree to which the network is focused on a single node.</p>
 <p>We can compute centralization for a range of centrality measures with the <code>centralization(...)</code> function, to which we pass the corresponding centrality function:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">centralization</span>(flomarriage, degree, <span class="at">mode =</span> <span class="st">"graph"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1163,6 +1195,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./08-structural-holes.html" class="pagination-link" aria-label="Structural holes">
+        <span class="nav-page-text">Structural holes</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
