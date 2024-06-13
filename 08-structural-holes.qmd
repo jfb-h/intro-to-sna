@@ -196,13 +196,6 @@ net_advice <- network(adjmat)
 #| eval: true
 
 net_sym <- network(symmetrize(net_advice), directed=FALSE)
-
-df <- data.frame(
-  effsize = apply_egonet(net_sym, egonet_effsize),
-  efficiency = apply_egonet(net_sym, egonet_efficiency),
-  constraint = apply_egonet(net_sym, egonet_constraint)
-)
-
 ```
 
 3. Extract the ego-networks for node 40 and node 33.
