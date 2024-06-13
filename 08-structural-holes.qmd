@@ -1,0 +1,282 @@
+---
+title: "Structural Holes and Ego-networks"
+editor: visual
+---
+
+In the operationalization of his structural hole theory, Ron Burt (1992) devised a set of measures that quantify the degree to which an actor can access distinct resources through their contacts.
+In the following, we will explore these measures in the context of the Florentine families' marriage network, which we is contained in the `statnet` suite:
+
+```{r}
+#| warning: false
+#| error: false
+#| output: false
+
+library(statnet)
+data(florentine)
+```
+
+The structural hole measures are not included in either `statnet` or `igraph`, but they are not that hard to implement, so we will implement our own as we go.
+
+# Extract ego-networks
+
+Burt's structural hole measures operate on ego-networks, i.e., they only take the direct neighbourhood of a node into account. Since we have a full network here, the first thing we need is a way to extract a specified node's ego-network. Helpfully, `statnet` privides the function `ego.extract(...)`, which does exactly that:
+
+```{r}
+ego_medici <- ego.extract(flomarriage, ego = 9)
+ego_medici
+```
+
+We see that the output of `ego.extract` is the adjacency matrix of the ego-network, wrapped in a named list, from which we can extract its sole element with `$Medici` or with double square braces and a string index (`[["Medici"]]`). From this adjacency matrix, we can then easily reconstruct a `network` object:
+
+```{r}
+ego_medici <- network(ego_medici[["Medici"]], directed=FALSE)
+```
+
+Looking at the Medici's ego-network, we can see that only a single pair of their alteri is connected:
+
+```{r}
+gplot(ego_medici, gmode = "graph",
+      label = ego_medici %v% "vertex.names",
+      vertex.col = "black", edge.col = "grey70")
+```
+
+# Effective size and efficiency
+
+We are now ready to compute the measures. The effective size reduces the size of the ego-network $n$ (i.e, the number of alteri) by the average degree of the alteri among each other:
+
+$$n - \frac{2t}{n}$$
+
+Here, $t$ is the number of edges among the alteri, which we multiply by two because each edge contributes to the degree of two actors.
+
+To compute this in `R`, we write a function called `egonet_effsize(...)` which takes in an ego-network and returns the above number.
+
+```{r}
+#| code-fold: true
+#| code-summary: Effective size implementation
+#| eval: true
+
+egonet_effsize <- function(egonet) {
+  n <- network.size(egonet) - 1
+  t <- network.edgecount(egonet) - n
+  return(n - 2 * t / n)
+}
+```
+
+Let's call it on the Medici ego-network extracted before:
+
+```{r}
+egonet_effsize(ego_medici)
+```
+
+As we can see, the Medici's degree of 6 got reduced slightly due to the one marriage tie among their alteri.
+
+A related quantity is the *efficiency*, which is just the ego-network's size divided by its effective size. We can easily implement it using the definition of effective size above:
+
+```{r}
+#| code-fold: true
+#| code-summary: Efficiency implementation
+#| eval: true
+
+egonet_efficiency <- function(egonet){
+  size <- network.size(egonet) - 1
+  effsize <- egonet_effsize(egonet)
+  return(effsize/size)
+}
+```
+
+We can again call our new efficiency function on the Medici ego-network:
+
+```{r}
+egonet_efficiency(ego_medici)
+```
+
+This value is close to one because there is very littly redundancy in the ego-network, i.e., the Medici have ties to other families which are largely disconnected from each other
+
+# Network constraint
+
+The network contstraint is slightly more involved and measures the degree to which ego is invested in an alter that his other alteri are also strongly invested in.
+
+By default the constraint has no simple bounds (e.g., 0 and 1) and so we have to contend ourselves with the notion that higher constraint indicates more redundancy in an ego-network and thus a decrease in social capital.
+
+Node level constraint is the sum of the dyadic constraint for each of ego's alters. We here provide an implementation of both:
+
+```{r}
+#| code-fold: true
+#| code-summary: Constraint
+#| eval: true
+
+dyadic_constraint <- function(egonet, alter) {
+  pij <- egonet[1, alter] / sum(egonet[1,])
+  pqj <- egonet[alter,-1] / sum(egonet[alter,])
+  pqj[is.nan(pqj)] <- 0
+  return((pij + sum(pij * pqj))^2)
+}
+
+egonet_constraint <- function(egonet) {
+  alteri <- 2:network.size(egonet)
+  dc <- sapply(alteri, function(a) dyadic_constraint(egonet, a))
+  return(sum(dc))
+}
+```
+
+We can now compare the degree to which the Medici's social capital is constrained by, e.g., the Ridolfi (node 5) compared to the Albizzi (node 3):
+
+```{r}
+dyadic_constraint(ego_medici, 5)
+dyadic_constraint(ego_medici, 3)
+```
+
+Similarly, we can compute the overall constraint:
+
+```{r}
+egonet_constraint(ego_medici)
+
+```
+
+# Apply a measure to all ego-networks
+
+So far, we have only computed the structural hole measures for a single ego-network.
+Usually, we want to compare nodes on these measures, e.g., because we expect that constraint makes a difference for other node-level outcomes.
+
+To automate the process of extracting ego-networks and applying a function to them, we here provide the `apply_egonet(...)` function, wich takes a network and a function to compute a statistic of interest on each extracted ego-network as arguments.
+
+```{r}
+#| code-fold: true
+#| code-summary: Apply to network
+#| eval: true
+
+apply_egonet <- function(net, FUN) {
+  if (is.directed(net)) stop("Not implemented for directed graphs.")
+  egonets <- lapply(ego.extract(net), FUN = network, directed = FALSE)
+  return(sapply(egonets, FUN))
+}
+```
+
+Because the structural hole measures are not all stringently defined for isolated nodes, we first remove them from the network:
+
+```{r}
+isol <- isolates(flomarriage)
+noisol <- seq(network.size(flomarriage))[-isol]
+flomarriage_noisol <- flomarriage %s% noisol 
+```
+
+Now we can compute the constraint for each ego-network using `apply_egonet` as follows:
+
+```{r}
+apply_egonet(flomarriage_noisol, egonet_constraint)
+```
+
+We can see that the Medici have the lowest constraints of all the Florentine families.
+
+## Exercises
+
+1. Load the Lazega advice network into an `R` session.
+
+```{r}
+#| code-fold: true
+#| code-summary: Apply to network
+#| eval: true
+
+adjmat <- read.table("data/lazega_advice.csv", 
+                     sep =";", 
+                     header = TRUE, 
+                     row.names = 1, 
+                     check.names = FALSE)
+
+adjmat <- as.matrix(adjmat)
+
+net_advice <- network(adjmat)
+```
+
+2. Symmetrize the network, using the weak rule.
+
+```{r}
+#| code-fold: true
+#| code-summary: Apply to network
+#| eval: true
+
+net_sym <- network(symmetrize(net_advice), directed=FALSE)
+
+df <- data.frame(
+  effsize = apply_egonet(net_sym, egonet_effsize),
+  efficiency = apply_egonet(net_sym, egonet_efficiency),
+  constraint = apply_egonet(net_sym, egonet_constraint)
+)
+
+```
+
+3. Extract the ego-networks for node 40 and node 33.
+
+```{r}
+#| code-fold: true
+#| code-summary: Apply to network
+#| eval: true
+
+e1 <- network(ego.extract(net_sym, ego=33)[["33"]], directed=FALSE)
+e2 <- network(ego.extract(net_sym, ego=40)[["40"]], directed=FALSE)
+```
+
+4. Plot the two ego-networks side by side. Color the ego node differently than the alteri and increase its size.
+
+```{r}
+#| code-fold: true
+#| code-summary: Apply to network
+#| eval: true
+
+par(mfrow = c(1,2), mar=c(0,0,3,0))
+
+gplot(e1,
+      gmode = "graph",
+      vertex.col = c("red", rep("grey20", network.size(e1) - 1)),
+      vertex.cex = c(2, rep(1, network.size(e1) - 1)),
+      edge.col = "grey70")
+
+gplot(e2,
+      gmode = "graph",
+      vertex.col = c("red", rep("grey20", network.size(e2) - 1)),
+      vertex.cex = c(2, rep(1, network.size(e2) - 1)),
+      edge.col = "grey70")
+
+```
+
+5. Compute the degree centrality, effective size, and efficiency for the two nodes. What do you observe?
+
+```{r}
+#| code-fold: true
+#| code-summary: Apply to network
+#| eval: true
+
+degree(e1)[1]
+degree(e2)[1]
+
+egonet_effsize(e1)
+egonet_effsize(e2)
+
+egonet_efficiency(e1)
+egonet_efficiency(e2)
+```
+
+6. Compute the degree, constraint, effective size, and efficiency for all nodes in the network.
+
+```{r}
+#| code-fold: true
+#| code-summary: Apply to network
+#| eval: true
+
+degree <- degree(net_sym)
+constraint <- apply_egonet(net_sym, egonet_constraint)
+effsize <- apply_egonet(net_sym, egonet_effsize)
+efficiency <- apply_egonet(net_sym, egonet_efficiency)
+```
+
+7. Create a pairs plot (see session on centrality) of the structural hole measures and degree centrality. What do you observe?
+
+```{r}
+source("helpers/pairsplot.R") # load helper script to improve the plot
+
+measures <- cbind(degree, constraint, effsize, efficiency)
+
+pairs(measures,
+      upper.panel = panel.cor,
+      diag.panel = panel.hist)
+```

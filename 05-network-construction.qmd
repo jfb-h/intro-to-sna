@@ -3,8 +3,6 @@ title: "Representing networks in R"
 editor: visual
 ---
 
-# Network representations
-
 Networks can be represented in various formats, each offering its own advantages: Edgelists, for example, are good for storing and passing around networks, while adjacency lists or adjacency matrices are often preferable for computation.
 
 Software packages for network analysis, such as `statnet` or `igraph`, usually hide the underlying data structure used for computation as an implementation detail while allowing import and export from/to a wide range of formats.

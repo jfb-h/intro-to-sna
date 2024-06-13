@@ -1,13 +1,11 @@
 ---
-title: "Centrality Measures in R"
+title: "Measures of Network Centrality"
 editor: visual
 ---
 
-# Marriages among Florentine Families
-
 Centrality measures assess the importance of an actor's position within a network. We will explore the most important ones: degree centrality, closeness centrality, betweenness centrality, and eigenvector centrality. While other centrality measures exist, they are often related to one of these four.
 
-We again start by loading the `statnet` suite (which contains the `network` and `sna` packages): 
+We again start by loading the `statnet` suite (which contains the `network` and `sna` packages):
 
 ```{r}
 #| warning: false
@@ -16,6 +14,8 @@ We again start by loading the `statnet` suite (which contains the `network` and 
 
 library(statnet)
 ```
+
+## Marriages among Florentine Families
 
 We will demonstrate the various centrality mesures using the `florentine` datasets contained in the `network` package, which contain the marriage and business ties among Renaissance Florentine families. The dataset was originally prepared by Padgett (1994) in his analysis of the Medici's rise to power. Since the data is already prepared as a set of `network` objects, we can skip conversion this time.
 
@@ -38,9 +38,9 @@ gplot(flomarriage,
       gmode = "graph",
       label = family_names,
       vertex.col = "grey20",
-      edge.col = "grey70")
+      edge.col = "grey70",
+      pad=1)
 ```
-
 
 ## Degree Centrality
 
@@ -61,7 +61,8 @@ gplot(flomarriage,
       label = family_names,
       vertex.cex = sqrt(deg),
       vertex.col = "grey20",
-      edge.col = "grey70")
+      edge.col = "grey70",
+      pad=1)
 ```
 
 Instead of using degrees directly, we use the square root of degrees because otherwise some nodes will be too large. Here, we can see that the Medici are the most central family in the network in that they have the most marriage ties to other Florentine families.
@@ -124,7 +125,7 @@ closeness(flomarriage_noisol, cmode = "undirected")
 
 ### Sum-of-Inverse Distances Closeness
 
-Another approach to handle infinite geodesic distances in closeness calculations is using the sum-of-inverse-distances method. this approach reformulates closeness as the sum of inverse distances instead of the inverse of the sum of distances, which means that just the term involving the isolate node will be zero. 
+Another approach to handle infinite geodesic distances in closeness calculations is using the sum-of-inverse-distances method. this approach reformulates closeness as the sum of inverse distances instead of the inverse of the sum of distances, which means that just the term involving the isolate node will be zero.
 
 We can calculate closeness this way by specifying `cmode = "suminvundir"`:
 
@@ -154,7 +155,7 @@ Because betweenness scores can get very large quickly, it can make sense to norm
 
 ```{r}
 N <- network.size(flomarriage) 
-norm <- ((N-1)*(N-2)/2)
+norm <- (N-1)*(N-2)/2
 bet_norm <- bet / norm
 ```
 
@@ -232,7 +233,7 @@ As we can see, the Medici are the most central of the Florentine families accord
 
 # Graph-Level Centralization
 
-While centrality measures are by default used to distinguish nodes by their network position, we can also use them to compute a graph-level *centralization* score. Centralization measures the degree of concentration of centrality in the network, i.e. te degree to which the network is focused on a single node.
+While centrality measures are by default used to distinguish nodes by their network position, we can also use them to compute a graph-level *centralization* score. Centralization measures the degree of concentration of centrality in the network, i.e. the degree to which the network is focused on a single node.
 
 We can compute centralization for a range of centrality measures with the `centralization(...)` function, to which we pass the corresponding centrality function:
 
@@ -246,7 +247,7 @@ By default, values are normalized against the theoretical maximum centralization
 
 ## Exercises
 
-1. Load the lazega advice network into a directed `network` object.
+1.  Load the lazega advice network into a directed `network` object.
 
 ```{r}
 #| code-fold: true
@@ -264,7 +265,7 @@ adjmat <- as.matrix(adjmat)
 net_advice <- network(adjmat)
 ```
 
-2. Pick an appropriate centrality measure to capture the flow of knowledge across the network. Which measure do you choose?
+2.  Pick an appropriate centrality measure to capture the flow of knowledge across the network. Which measure do you choose?
 
 ```{r}
 #| code-fold: true
@@ -275,7 +276,7 @@ net_advice <- network(adjmat)
 
 ```
 
-3. Compute the corresponding node level centralities using an appropriate specification.
+3.  Compute the corresponding node level centralities using an appropriate specification.
 
 ```{r}
 #| code-fold: true
@@ -285,7 +286,7 @@ net_advice <- network(adjmat)
 bet <- betweenness(net_advice) 
 ```
 
-4. Find the most and least central nodes in the network.
+4.  Find the most and least central nodes in the network.
 
 ```{r}
 #| code-fold: true
@@ -296,7 +297,7 @@ which.min(bet)
 which.max(bet) 
 ```
 
-5. Visualize the network using the centrality scores.
+5.  Visualize the network using the centrality scores.
 
 ```{r}
 #| code-fold: true
@@ -313,7 +314,7 @@ gplot(net_advice,
 
 ```
 
-6. Visualize the distribution of the centrality scores using a histogram. What do you learn about the network?
+6.  Visualize the distribution of the centrality scores using a histogram. What do you learn about the network?
 
 ```{r}
 #| code-fold: true
@@ -325,7 +326,7 @@ hist(bet,
      xlab="Betweenness centrality")
 ```
 
-7. Compute the centralization of the network using the chosen centrality measure. What does it tell you?
+7.  Compute the centralization of the network using the chosen centrality measure. What does it tell you?
 
 ```{r}
 #| code-fold: true
@@ -335,7 +336,7 @@ hist(bet,
 centralization(net_advice, betweenness)
 ```
 
-8. Also load the friendship network into your `R` session. 
+8.  Also load the friendship network into your `R` session.
 
 ```{r}
 #| code-fold: true
@@ -353,7 +354,7 @@ adjmat <- as.matrix(adjmat)
 net_friendship <- network(adjmat)
 ```
 
-9. Compute centralities for the friendship network using the same measure as before.
+9.  Compute centralities for the friendship network using the same measure as before.
 
 ```{r}
 #| code-fold: true
@@ -364,7 +365,7 @@ bet_friendship <- betweenness(net_friendship)
 ```
 
 10. Plot the two networks side-by-side, using the respective centrality scores to scale node size. What do you observe?
-   
+
 ```{r}
 #| code-fold: true
 #| code-summary: Solution

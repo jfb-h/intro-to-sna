@@ -15,6 +15,7 @@ website:
     style: "docked"
     background: "light"
     search: true
+    collapse-level: 1
     contents:
       - section: "Getting started"
         contents:
@@ -23,7 +24,7 @@ website:
           - href: 00-simple-example.qmd
             text: A basic example
 
-      - section: "`R` basics"
+      - section: "`R` programming basics"
         contents:
           - href: 01-basics.qmd
             text: "Variables and functions"
@@ -40,8 +41,22 @@ website:
             text: "Network represenations"
           - href: 06-network-types.qmd
             text: "Network types"
+
+      - section: "Node-level indicators"
+        contents:
           - href: 07-centrality.qmd
             text: "Centrality measures"
+          - href: 08-structural-holes.qmd
+            text: "Structural holes"
+          - href: 09-actor-attributes.qmd
+            text: "Node-level indices and actor attributes"
+
+      - section: "Group structure"
+        contents:
+
+      - section: "Modeling structure"
+        contents:
+
 
 format:
   html:
