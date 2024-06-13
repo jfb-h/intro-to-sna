@@ -412,10 +412,10 @@ window.Quarto = {
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>adj_weighted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           [,1]       [,2]       [,3]       [,4]
-[1,] 0.40364902  1.9647671  0.4407246 -1.0841690
-[2,] 0.79129285 -0.8567389 -0.3093376  1.7459759
-[3,] 0.25655863  2.4473195  1.2357664 -0.5073200
-[4,] 0.05575049  1.2724799  1.6587030 -0.9630762</code></pre>
+[1,] -1.1385894  1.6729069 -0.7410201 -1.8202486
+[2,] -0.1522689  0.8998536 -0.4240072  0.8714341
+[3,] -0.2756662 -0.7627459 -1.1815495 -0.4555749
+[4,] -0.4020655 -0.6641086 -0.3350928 -0.7352120</code></pre>
 </div>
 </div>
 <p>By default, the <code>network(...)</code> function ignores edge values/weights. We here accordingly specify <code>ignore.eval = FALSE</code> and specify a name for our weights by setting <code>names.eval = "name"</code>:</p>
@@ -453,10 +453,10 @@ window.Quarto = {
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>adj_dicho</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4]
-[1,]    1    1    1    0
-[2,]    1    0    0    1
-[3,]    0    1    1    0
-[4,]    0    1    1    0</code></pre>
+[1,]    0    1    0    0
+[2,]    0    1    0    1
+[3,]    0    0    0    0
+[4,]    0    0    0    0</code></pre>
 </div>
 </div>
 <p>In the dichotomized matrix, all cells with a value of <span class="math inline">\(0.3\)</span> or more are set to <span class="math inline">\(1\)</span> while all cells below the threshold are set to a <span class="math inline">\(0\)</span>. We can then pass the dichotomized adjacency matrix to the network constructor again:</p>

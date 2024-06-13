@@ -376,8 +376,7 @@ Tornabuoni      1          0       0         0       1        0          0</code
 <h1>Effective size and efficiency</h1>
 <p>We are now ready to compute the measures. The effective size reduces the size of the ego-network <span class="math inline">\(n\)</span> (i.e, the number of alteri) by the average degree of the alteri among each other:</p>
 <p><span class="math display">\[n - \frac{2t}{n}\]</span></p>
-<p>Here, <span class="math inline">\(t\)</span> is the number of edges among the alteri, which we multiply by two because each edge contributes to the degree of two actors.</p>
-<p>To compute this in <code>R</code>, we write a function called <code>egonet_effsize(...)</code> which takes in an ego-network and returns the above number.</p>
+<p>Here, <span class="math inline">\(t\)</span> is the number of edges among the alteri, which we multiply by two because each edge contributes to the degree of two actors. To compute this in <code>R</code>, we write a function called <code>egonet_effsize(...)</code> which takes in an ego-network and returns the above number.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Effective size implementation</summary>
@@ -395,8 +394,7 @@ Tornabuoni      1          0       0         0       1        0          0</code
 <pre><code>[1] 5.666667</code></pre>
 </div>
 </div>
-<p>As we can see, the Medici’s degree of 6 got reduced slightly due to the one marriage tie among their alteri.</p>
-<p>A related quantity is the <em>efficiency</em>, which is just the ego-network’s size divided by its effective size. We can easily implement it using the definition of effective size above:</p>
+<p>As we can see, the Medici’s degree of 6 got reduced slightly due to the one marriage tie among their alteri. A related quantity is the <em>efficiency</em>, which is just the ego-network’s size divided by its effective size. We can easily implement it using the definition of effective size above:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Efficiency implementation</summary>
