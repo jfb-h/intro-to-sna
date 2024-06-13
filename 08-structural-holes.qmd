@@ -93,8 +93,19 @@ egonet_efficiency(ego_medici)
 This value is close to one because there is very littly redundancy in the ego-network, i.e., the Medici have ties to other families which are largely disconnected from each other
 
 # Network constraint
+The network constraint is slightly more involved but is also designed to measure the degree to which a node's network is constrained by redundancy, i.e., strong cohesion of their alteri.
 
-The network contstraint is slightly more involved and measures the degree to which ego is invested in an alter that his other alteri are also strongly invested in.
+It is formally defined as the sum of dyadic constraints $c_{ij}$ over all neighbors of node $i$, $N(i)$:
+
+$$ \sum_{j \in N(i)}c_{ij} $$
+
+The dyadic constraint is in turn defined as the degree to which ego (i.e., node $i$) is invested into an alter $j$ that the other alteri are also heavily invested in and is given by:
+
+$$ c_{ij} = \left(p_{ij} + \sum_{q \in N(i) - j} p_{iq} p_{qj} \right)^2, $$
+
+where $p_{ij}$ is the investment of ego $i$ in alter $j$ and is defined in terms of the elements of the adjacency matrix, $a$:
+
+$$ p_{ij} = \frac{a_{ij} + a_{ji}}{\sum_j (a_{ij} + a_{ji})} $$ 
 
 By default the constraint has no simple bounds (e.g., 0 and 1) and so we have to contend ourselves with the notion that higher constraint indicates more redundancy in an ego-network and thus a decrease in social capital.
 
