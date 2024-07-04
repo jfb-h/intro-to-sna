@@ -1,47 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/09-actor-attributes.html</loc>
-    <lastmod>2024-06-12T08:39:00.745Z</lastmod>
+    <loc>https://jfb-h.github.io/intro-to-sna/12-communities.html</loc>
+    <lastmod>2024-07-04T07:51:10.204Z</lastmod>
   </url>
   <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/07-centrality.html</loc>
-    <lastmod>2024-06-12T10:05:20.179Z</lastmod>
+    <loc>https://jfb-h.github.io/intro-to-sna/10-blocks-groups.html</loc>
+    <lastmod>2024-07-04T06:55:28.771Z</lastmod>
   </url>
   <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/05-network-construction.html</loc>
-    <lastmod>2024-06-12T08:44:08.729Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/03-data-handling.html</loc>
-    <lastmod>2024-05-16T07:02:04.360Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/01-basics.html</loc>
-    <lastmod>2024-05-10T07:02:19.509Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/00-index.html</loc>
-    <lastmod>2024-06-05T12:03:37.486Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/00-simple-example.html</loc>
-    <lastmod>2024-05-09T14:23:50.752Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/02-loading-data.html</loc>
-    <lastmod>2024-05-10T06:34:19.229Z</lastmod>
-  </url>
-  <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/04-plotting.html</loc>
-    <lastmod>2024-05-10T07:09:28.881Z</lastmod>
+    <loc>https://jfb-h.github.io/intro-to-sna/08-structural-holes.html</loc>
+    <lastmod>2024-07-04T07:45:24.596Z</lastmod>
   </url>
   <url>
     <loc>https://jfb-h.github.io/intro-to-sna/06-network-types.html</loc>
     <lastmod>2024-06-12T08:40:43.215Z</lastmod>
   </url>
   <url>
-    <loc>https://jfb-h.github.io/intro-to-sna/08-structural-holes.html</loc>
-    <lastmod>2024-06-13T07:48:17.276Z</lastmod>
+    <loc>https://jfb-h.github.io/intro-to-sna/04-plotting.html</loc>
+    <lastmod>2024-05-10T07:09:28.881Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/02-loading-data.html</loc>
+    <lastmod>2024-05-10T06:34:19.229Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/00-simple-example.html</loc>
+    <lastmod>2024-05-09T14:23:50.752Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/00-index.html</loc>
+    <lastmod>2024-06-05T12:03:37.486Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/01-basics.html</loc>
+    <lastmod>2024-05-10T07:02:19.509Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/03-data-handling.html</loc>
+    <lastmod>2024-05-16T07:02:04.360Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/05-network-construction.html</loc>
+    <lastmod>2024-06-12T08:44:08.729Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/07-centrality.html</loc>
+    <lastmod>2024-06-12T10:05:20.179Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/09-actor-attributes.html</loc>
+    <lastmod>2024-07-04T06:41:16.337Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jfb-h.github.io/intro-to-sna/11-ei-index.html</loc>
+    <lastmod>2024-07-04T07:30:30.926Z</lastmod>
   </url>
 </urlset>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Intro to SNA in R – actor-attributes</title>
+<title>Intro to SNA in R – Working with node attributes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,6 +64,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./10-blocks-groups.html" rel="next">
 <link href="./08-structural-holes.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -217,8 +252,33 @@ ul.task-list li input[type="checkbox"] {
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Group structure</span></span>
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Group structure</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-blocks-groups.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Subgroups and blocks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-ei-index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The EI-index</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-communities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Network communities</span></a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -229,17 +289,277 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#adding-attributes-to-a-network" id="toc-adding-attributes-to-a-network" class="nav-link active" data-scroll-target="#adding-attributes-to-a-network">Adding attributes to a network</a></li>
+  <li><a href="#adding-node-level-measures-to-the-attribute-table" id="toc-adding-node-level-measures-to-the-attribute-table" class="nav-link" data-scroll-target="#adding-node-level-measures-to-the-attribute-table">Adding node-level measures to the attribute table</a></li>
+  <li><a href="#assignment" id="toc-assignment" class="nav-link" data-scroll-target="#assignment">Assignment</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-centrality.html">Node-level indicators</a></li><li class="breadcrumb-item"><a href="./09-actor-attributes.html">Node-level indices and actor attributes</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Working with node attributes</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
+
+
+<p>Working with measures derived from networks, such as node-level centrality scores, becomes especially interesting when you combine them with exogeneous node attributes, such as an actor’s opinions, sociodemographic characteristics, or innovative output.</p>
+<p>There are two basic options to combine a network and node attributes: (1) add the node attributes to the network, and (b) add a node-level score computed from the network to the attribute dataset.</p>
+<p>Before we get going, we first need to load <code>statnet</code> again:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(statnet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="adding-attributes-to-a-network" class="level2">
+<h2 class="anchored" data-anchor-id="adding-attributes-to-a-network">Adding attributes to a network</h2>
+<p>Let’s say we have a small network describing friendships among four students:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>edgelist <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">sender =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">receiver =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">4</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>net <span class="ot">&lt;-</span> <span class="fu">network</span>(edgelist, <span class="at">directed=</span><span class="cn">FALSE</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(net, <span class="at">gmode=</span><span class="st">"graph"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-actor-attributes_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In addition to the network, we have a data frame with attributes for the four students:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>attributes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">subject =</span> <span class="fu">c</span>(<span class="st">"geography"</span>, <span class="st">"geography"</span>, <span class="st">"economics"</span>, <span class="st">"physics"</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">grade =</span> <span class="fu">c</span>(<span class="fl">1.3</span>, <span class="fl">1.7</span>, <span class="fl">2.3</span>, <span class="fl">2.7</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"Tim"</span>, <span class="st">"Tina"</span>, <span class="st">"Tom"</span>, <span class="st">"Tiphany"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>attributes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    subject grade    name
+1 geography   1.3     Tim
+2 geography   1.7    Tina
+3 economics   2.3     Tom
+4   physics   2.7 Tiphany</code></pre>
+</div>
+</div>
+<p>We can now add the attributes to the network object using the vertex pipe operator <code>%v%</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>net <span class="sc">%v%</span> <span class="st">"subject"</span> <span class="ot">&lt;-</span> attributes<span class="sc">$</span>subject</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>net <span class="sc">%v%</span> <span class="st">"grade"</span> <span class="ot">&lt;-</span> attributes<span class="sc">$</span>grade</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>net <span class="sc">%v%</span> <span class="st">"name"</span> <span class="ot">&lt;-</span> attributes<span class="sc">$</span>name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we do this, we need to make sure that the order of actors in the network is the same as in the data frame (i.e., that node one corresponds to Tim, node 2 corresponds to Tina, etc.).</p>
+<p>inspecting the network object, we can see that it now contains our actor information as vertex attributes:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>net</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Network attributes:
+  vertices = 4 
+  directed = FALSE 
+  hyper = FALSE 
+  loops = FALSE 
+  multiple = FALSE 
+  bipartite = FALSE 
+  total edges= 4 
+    missing edges= 0 
+    non-missing edges= 4 
+
+ Vertex attribute names: 
+    grade name subject vertex.names 
+
+No edge attributes</code></pre>
+</div>
+</div>
+</section>
+<section id="adding-node-level-measures-to-the-attribute-table" class="level2">
+<h2 class="anchored" data-anchor-id="adding-node-level-measures-to-the-attribute-table">Adding node-level measures to the attribute table</h2>
+<p>Let’s say we have computed degree centrality scores for our four students:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>deg <span class="ot">&lt;-</span> <span class="fu">degree</span>(net)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>deg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4 4 6 2</code></pre>
+</div>
+</div>
+<p>To make these more easily comparable with our actor attributes, we can add them to the attributes data frame. Here, we again need to make sure that the order of nodes in the network is the same as in the data frame:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>attributes<span class="sc">$</span>degree <span class="ot">&lt;-</span> deg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now continue working with this data frame in the usual way (see session 3 on data handling for some examples). Because most standard statistics procedures are more convenient to use with data frames, computing network measures and adding them to an attribute data frame is often more sensible than adding attributes to the network object.</p>
+<p>There are however some exceptions and caveats: If you modify the network, e.g., by removing isolates or only keeping the main component, you also need to update the attribute data frame. Also, some network analysis packages make use of attributes contained in the network (e.g., the <code>ergm</code> package).</p>
+</section>
+<section id="assignment" class="level2">
+<h2 class="anchored" data-anchor-id="assignment">Assignment</h2>
+<p>Load the Load the Lazega advice network into and the associated attribute dataset (<code>lazega_attrib.csv</code>) into your session. These attribute table contains additional information on the lawyers in the network (e.g., age, gender, office, …). Read the description of the data provided in the <code>Lazega_lawyers.html</code> file, which you can open in a standard internet browser.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Loading attributes</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>attributes <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">"data/lazega_attrib.csv"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>attributes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Loading network</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>adjmat <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"data/lazega_advice.csv"</span>, </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sep =</span><span class="st">";"</span>, </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">header =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">row.names =</span> <span class="dv">1</span>, </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>adjmat <span class="ot">&lt;-</span> <span class="fu">symmetrize</span>(<span class="fu">as.matrix</span>(adjmat))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>net_advice <span class="ot">&lt;-</span> <span class="fu">network</span>(adjmat, <span class="at">directed=</span><span class="cn">FALSE</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>net_advice</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Problem 1</strong></p>
+<p>a) Visualize the network using information on the office affiliation and the status of the members.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Solution</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">palette</span>(<span class="fu">c</span>(<span class="st">"grey10"</span>, <span class="st">"orange"</span>, <span class="st">"cornflowerblue"</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(net_advice, </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">vertex.col=</span>attributes<span class="sc">$</span>office,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">vertex.cex=</span><span class="fl">1.5</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">vertex.sides=</span><span class="fu">ifelse</span>(attributes<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">50</span>, <span class="dv">4</span>),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">edge.col=</span><span class="st">"grey70"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>b) Compare the centrality scores according to a measure of your choosing across the three offices (<code>office</code>), the two status groups (<code>status</code>) and <code>gender</code>. What differences do you find and what could be possible explanations?</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Solution</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add betweenness scores to attribute df</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>attributes<span class="sc">$</span>betweenness <span class="ot">&lt;-</span> <span class="fu">betweenness</span>(net_advice, <span class="at">gmode=</span><span class="st">"graph"</span>, <span class="at">rescale=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># manually</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(attributes<span class="sc">$</span>betweenness[attributes<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>])</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(attributes<span class="sc">$</span>betweenness[attributes<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">2</span>])</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># using package</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>attributes <span class="sc">|&gt;</span> </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(status) <span class="sc">|&gt;</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>( <span class="at">n =</span> <span class="fu">n</span>(), <span class="at">bet =</span> <span class="fu">mean</span>(betweenness))</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>attributes <span class="sc">|&gt;</span> </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(office) <span class="sc">|&gt;</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>( <span class="at">n =</span> <span class="fu">n</span>(), <span class="at">bet =</span> <span class="fu">mean</span>(betweenness))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>b) Compare the lawyer with the highest centrality to the lawyer with the lowest centrality in terms of their attributes and summarize your findings.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Solution</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>attributes[<span class="fu">which.max</span>(attributes<span class="sc">$</span>betweenness),]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>attributes[<span class="fu">which.min</span>(attributes<span class="sc">$</span>betweenness),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Problem 2</strong></p>
+<p>a) Compute the effective size, efficiency, and constraint for all lawyers in the network.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Structural hole measures</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>egonet_effsize <span class="ot">&lt;-</span> <span class="cf">function</span>(egonet) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">network.size</span>(egonet) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">&lt;-</span> <span class="fu">network.edgecount</span>(egonet) <span class="sc">-</span> n</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(n <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> t <span class="sc">/</span> n)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>egonet_efficiency <span class="ot">&lt;-</span> <span class="cf">function</span>(egonet){</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  size <span class="ot">&lt;-</span> <span class="fu">network.size</span>(egonet) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  effsize <span class="ot">&lt;-</span> <span class="fu">egonet_effsize</span>(egonet)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(effsize<span class="sc">/</span>size)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>dyadic_constraint <span class="ot">&lt;-</span> <span class="cf">function</span>(egonet, alter) {</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  pij <span class="ot">&lt;-</span> egonet[<span class="dv">1</span>, alter] <span class="sc">/</span> <span class="fu">sum</span>(egonet[<span class="dv">1</span>,])</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  pqj <span class="ot">&lt;-</span> egonet[alter,<span class="sc">-</span><span class="dv">1</span>] <span class="sc">/</span> <span class="fu">sum</span>(egonet[alter,])</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  pqj[<span class="fu">is.nan</span>(pqj)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>((pij <span class="sc">+</span> <span class="fu">sum</span>(pij <span class="sc">*</span> pqj))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>egonet_constraint <span class="ot">&lt;-</span> <span class="cf">function</span>(egonet) {</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  alteri <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">network.size</span>(egonet)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  dc <span class="ot">&lt;-</span> <span class="fu">sapply</span>(alteri, <span class="cf">function</span>(a) <span class="fu">dyadic_constraint</span>(egonet, a))</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(dc))</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>apply_egonet <span class="ot">&lt;-</span> <span class="cf">function</span>(net, FUN) {</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.directed</span>(net)) <span class="fu">stop</span>(<span class="st">"Not implemented for directed graphs."</span>)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>  egonets <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">ego.extract</span>(net), <span class="at">FUN =</span> network, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sapply</span>(egonets, FUN))</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Solution</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>attributes<span class="sc">$</span>effsize <span class="ot">&lt;-</span> <span class="fu">apply_egonet</span>(net_advice, egonet_effsize)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>attributes<span class="sc">$</span>efficiency <span class="ot">&lt;-</span> <span class="fu">apply_egonet</span>(net_advice, egonet_efficiency)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>attributes<span class="sc">$</span>constraint <span class="ot">&lt;-</span> <span class="fu">apply_egonet</span>(net_advice, egonet_constraint)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>b) According to Burt’s structural hole theory, what would you expect regarding the relation between an actors’s scores on Burt’s measures of brokerage and their <code>status</code>?</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Solution</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Because structural holes are theorized to provide brokerage advantages, we expect that more succesful lawyers (those with higher status) have more efficient ego networks.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>c) Test you expectations with appropriate methods (descriptive statistics, visualization, or statistical modeling) and discuss your findings as well as potential problems with the approach.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Solution</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>attributes<span class="sc">$</span>status <span class="ot">&lt;-</span> <span class="fu">factor</span>(attributes<span class="sc">$</span>status,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">levels=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"partner"</span>, <span class="st">"associate"</span>))</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(attributes, <span class="fu">aes</span>(<span class="fu">factor</span>(status), effsize)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(attributes, <span class="fu">aes</span>(<span class="fu">factor</span>(status), constraint)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(attributes, <span class="fu">aes</span>(<span class="fu">log</span>(constraint), seniority)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># linear regression on seniority (lower is higher)</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(seniority <span class="sc">~</span> <span class="fu">scale</span>(constraint) <span class="sc">+</span> <span class="fu">scale</span>(age), <span class="at">data=</span>attributes)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit1)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co"># logistic regression on status (probability of being an associate)</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(status <span class="sc">~</span> <span class="fu">scale</span>(constraint) <span class="sc">+</span> <span class="fu">scale</span>(age), <span class="at">data=</span>attributes, <span class="at">family=</span><span class="st">"binomial"</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit2)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="fu">plogis</span>(<span class="fl">2.22</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plogis</span>(<span class="sc">-</span><span class="fl">2.36</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -669,6 +989,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./10-blocks-groups.html" class="pagination-link" aria-label="Subgroups and blocks">
+        <span class="nav-page-text">Subgroups and blocks</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
