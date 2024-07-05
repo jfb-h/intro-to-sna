@@ -436,11 +436,11 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>adj_weighted <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">16</span>), <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>adj_weighted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>           [,1]       [,2]        [,3]       [,4]
-[1,] -1.1157954 -0.4987412 -0.05677457  0.5142753
-[2,]  0.9331649 -0.4038980  1.33041770 -0.0577010
-[3,] -0.8600473 -1.2592117  0.23263463  0.8467523
-[4,] -0.0889445 -0.7354150 -1.72983397 -2.4148515</code></pre>
+<pre><code>            [,1]       [,2]       [,3]       [,4]
+[1,] -0.03999972  0.2256839  0.4039006 -0.5179982
+[2,]  1.74145735  0.8788211 -1.5632242 -0.6713194
+[3,]  0.37996057 -0.5347974 -2.0112500  0.2480686
+[4,]  0.81254475 -0.3406079 -0.5558324  1.5952645</code></pre>
 </div>
 </div>
 <p>By default, the <code>network(...)</code> function ignores edge values/weights. We here accordingly specify <code>ignore.eval = FALSE</code> and specify a name for our weights by setting <code>names.eval = "name"</code>:</p>
@@ -478,10 +478,10 @@ window.Quarto = {
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>adj_dicho</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4]
-[1,]    0    0    0    1
-[2,]    1    0    1    0
-[3,]    0    0    0    1
-[4,]    0    0    0    0</code></pre>
+[1,]    0    0    1    0
+[2,]    1    1    0    0
+[3,]    1    0    0    0
+[4,]    1    0    0    1</code></pre>
 </div>
 </div>
 <p>In the dichotomized matrix, all cells with a value of <span class="math inline">\(0.3\)</span> or more are set to <span class="math inline">\(1\)</span> while all cells below the threshold are set to a <span class="math inline">\(0\)</span>. We can then pass the dichotomized adjacency matrix to the network constructor again:</p>
