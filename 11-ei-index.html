@@ -409,7 +409,7 @@ window.Quarto = {
 </section>
 <section id="permutation-test-for-global-ei-index" class="level2">
 <h2 class="anchored" data-anchor-id="permutation-test-for-global-ei-index">Permutation Test for Global EI Index</h2>
-<p>To assess whether the observed EI index is larger than could be expected by chance, we can perform a permutation test. We do this by creating a large number of networks with similar basic features (size, number of edges, degree distribution) and computing the EI-index for each one of these, thus creating a reference distribution:</p>
+<p>To assess whether the observed EI index is larger than could be expected under some null model, we can compare it to the values we get for networks simulated from said null model. This involves creating a large number of networks with similar basic features (size, number of edges, degree distribution) and computing the EI-index for each one of these, thus creating a reference distribution:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create 500 random permutations of our network</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>pg <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
@@ -426,26 +426,6 @@ window.Quarto = {
 <div>
 <figure class="figure">
 <p><img src="11-ei-index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Instead of randomly permuting our network, we could generate random graphs with the same density as our network (which doesn’t maintain the same degree distribution):</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># alternative: test against density-conditioned random graphs</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">network.size</span>(net); dens <span class="ot">&lt;-</span> <span class="fu">gden</span>(net)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>rg <span class="ot">&lt;-</span> <span class="fu">rgraph</span>(N, <span class="at">m=</span><span class="dv">500</span>, <span class="at">tprob=</span>dens, <span class="at">mode=</span><span class="st">"graph"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>rg <span class="ot">&lt;-</span> <span class="fu">apply</span>(rg, <span class="dv">1</span>, network, <span class="at">directed=</span>F)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>ei_perm <span class="ot">&lt;-</span> <span class="fu">sapply</span>(pg, EI_index, attrib<span class="sc">$</span>office, <span class="at">out=</span><span class="st">"global"</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ei_perm, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">xlab=</span><span class="st">"EI-Index"</span>, <span class="at">main=</span><span class="st">"Permutation test for EI-Index"</span>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> res<span class="sc">$</span>global, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend=</span><span class="st">"observed"</span>, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="11-ei-index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
