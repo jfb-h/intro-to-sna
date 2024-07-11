@@ -293,8 +293,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#hierarchical-clustering" id="toc-hierarchical-clustering" class="nav-link active" data-scroll-target="#hierarchical-clustering">Hierarchical clustering</a></li>
+  <li><a href="#hierarchical-clustering" id="toc-hierarchical-clustering" class="nav-link active" data-scroll-target="#hierarchical-clustering">Hierarchical clustering</a>
+  <ul class="collapse">
   <li><a href="#inspect-result" id="toc-inspect-result" class="nav-link" data-scroll-target="#inspect-result">Inspect result</a></li>
+  </ul></li>
+  <li><a href="#modularity-optimization" id="toc-modularity-optimization" class="nav-link" data-scroll-target="#modularity-optimization">Modularity optimization</a></li>
   </ul>
 </nav>
     </div>
@@ -339,16 +342,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dist_gd <span class="ot">&lt;-</span> <span class="fu">geodist</span>(flomarriage)<span class="sc">$</span>gdist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Knowing the distance among all pairs of nodes, we can now iteratively group together the closest groups of nodes, for which we need to define a so called <em>linkage criterion</em>. Two popular options are:</p>
+<p>Knowing the distance among all pairs of nodes and starting out with each node in its own cluster, we can now iteratively merge together the closest clusters of nodes, until all nodes are in the same cluster. To specify which clusters to merge, we need to define a so called <em>linkage criterion</em>. Two popular options are:</p>
 <ul>
 <li>average: merge clusters with the lowest average distance</li>
-<li>ward: merge clusters that result in the smallest variance</li>
+<li>ward: merge clusters that result in the smallest total within-cluster variance</li>
 </ul>
-<p>We can specify the linkage criterion by specifying the <code>method</code> argument to the <code>hclust</code> function, which will perform the clustering:</p>
+<p>We can specify the linkage criterion by specifying the <code>method</code> argument to the <code>hclust</code> function, which will perform the clustering. We furthermore wrap our matrix of geodesic distances in the <code>as.dist(...)</code> function:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>clust <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">as.dist</span>(dist_gd), <span class="at">method =</span> <span class="st">"ward.D2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This will not only produce a single grouping of nodes, but instead gives us a hierarchy of groupings, from which we can choose one that seems sensible. We can inspect that hierarchy with a dendrogram:</p>
+<p>The iterative procedure described above will not only produce a single clustering of nodes, but instead gives us a hierarchy of groupings. We can inspect that hierarchy with a dendrogram to help us pick a sensible clustering:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(clust)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -359,13 +362,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>We can ‘cut’ this dendrogram at a specified hight <code>h</code> or to yield a given number of groups <code>k</code>. Here, we go for three groups:</p>
+<p>We can ‘cut’ this dendrogram at a specified hight <code>h</code> or indicate a given number of groups <code>k</code> to yield. Here, we go for three groups:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>memb <span class="ot">&lt;-</span> <span class="fu">cutree</span>(clust, <span class="at">k=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="inspect-result" class="level2">
-<h2 class="anchored" data-anchor-id="inspect-result">Inspect result</h2>
+<section id="inspect-result" class="level3">
+<h3 class="anchored" data-anchor-id="inspect-result">Inspect result</h3>
 <p>We can now inspect our detected communities by coloring nodes in the network graph:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(flomarriage, <span class="at">gmode=</span><span class="st">"graph"</span>,</span>
@@ -391,6 +393,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div>
 <figure class="figure">
 <p><img src="12-communities_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="modularity-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="modularity-optimization">Modularity optimization</h2>
+<p>Specifying a distance matrix and using hierarchical clustering is a very flexible procedure, since we could easily plug in something other than geodetic distances to measure how ‘close’ to nodes are to each other (e.g., reachability, clique comembership, maximum flow). However, this approach does not scale beyond maybe a couple thousands of nodes and thus is not suitable for large networks.</p>
+<p>Another popular approach is <em>modularity optimization</em>. Modularity measures the degree to which a network can be partitioned into internally cohesive and externally sparse subgroups. It does so by comparing the realized network structure to a random distribution of edges. This measure can then be taken as an optimization target to find a clustering for which the modularity is maximal, which is done, e.g., by the Louvain or the Leiden algorithm.</p>
+<p><code>statnet</code> does not implement modularity optimization, but <code>igraph</code> does. If we want to switch between the two, the <code>intergraph</code> package provides convenience methods for conversion:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(intergraph)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With this package, we can simply call <code>asIgraph</code> on a network object to produce a corresponding <code>igraph</code> graph object:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>flomarriage_ig <span class="ot">&lt;-</span> <span class="fu">asIgraph</span>(flomarriage)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>flomarriage_ig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>IGRAPH 8e7085d U--- 15 20 -- 
++ attr: na (v/l), priorates (v/n), totalties (v/n), vertex.names (v/c),
+| wealth (v/n), na (e/l)
++ edges from 8e7085d:
+ [1]  1-- 9  2-- 6  2-- 7  2-- 9  3-- 5  3-- 9  4-- 7  4--11  4--14  5--11
+[11]  5--14  7-- 8  7--15  9--12  9--13  9--15 10--13 11--14 12--14 12--15</code></pre>
+</div>
+</div>
+<p>We can then call igraph functions on this object, such as the <code>cluster_louvain(...)</code> method for modularity optimization:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>clust_ig <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">cluster_louvain</span>(flomarriage_ig) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>From this clustering object we can then extract the membership vector:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>membership_louvain <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">membership</span>(clust_ig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As before, we can investigate the result, e.g., by using node colors:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gplot</span>(flomarriage, </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">gmode=</span><span class="st">"graph"</span>, </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">vertex.col=</span>membership_louvain, </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">displaylabels=</span>T, <span class="at">label.pos=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="12-communities_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
