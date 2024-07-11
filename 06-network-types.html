@@ -436,11 +436,11 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>adj_weighted <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">16</span>), <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>adj_weighted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          [,1]       [,2]       [,3]       [,4]
-[1,] -1.996536 -0.4863796 -0.4828685  0.1904604
-[2,] -1.042265  0.4235857  0.2724621  2.5273148
-[3,] -1.524340  1.2603069 -0.3492467  1.0949114
-[4,]  1.389211  1.2243060 -0.6586683 -1.2388059</code></pre>
+<pre><code>            [,1]       [,2]       [,3]       [,4]
+[1,] -0.48919292 -0.6143342 -0.2508456 -0.7589464
+[2,]  2.47647551  0.6152643 -1.5491330 -0.2294421
+[3,]  0.07616462  0.4827681 -0.5042523 -0.5826422
+[4,] -0.58590979 -0.5694376 -0.4376402  0.4194428</code></pre>
 </div>
 </div>
 <p>By default, the <code>network(...)</code> function ignores edge values/weights. We here accordingly specify <code>ignore.eval = FALSE</code> and specify a name for our weights by setting <code>names.eval = "name"</code>:</p>
@@ -479,9 +479,9 @@ window.Quarto = {
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3] [,4]
 [1,]    0    0    0    0
-[2,]    0    1    0    1
-[3,]    0    1    0    1
-[4,]    1    1    0    0</code></pre>
+[2,]    1    1    0    0
+[3,]    0    1    0    0
+[4,]    0    0    0    1</code></pre>
 </div>
 </div>
 <p>In the dichotomized matrix, all cells with a value of <span class="math inline">\(0.3\)</span> or more are set to <span class="math inline">\(1\)</span> while all cells below the threshold are set to a <span class="math inline">\(0\)</span>. We can then pass the dichotomized adjacency matrix to the network constructor again:</p>
